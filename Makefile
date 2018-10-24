@@ -1,6 +1,6 @@
 NAME        := mercury
 VERSION     := 0.9.0
-RELEASE     := 1.git.f7f6955
+RELEASE     := 1.git.0f8f25b
 DIST        := $(shell rpm --eval %{dist})
 SRPM        := _topdir/SRPMS/$(NAME)-$(VERSION)-$(RELEASE)$(DIST).src.rpm
 RPMS        := _topdir/RPMS/x86_64/$(NAME)-$(VERSION)-$(RELEASE)$(DIST).x86_64.rpm           \
@@ -12,7 +12,7 @@ SRC_EXT     := gz
 #SOURCE1_URL := https://github.com/mercury-hpc/mercury/releases/download/v$(VERSION)/$(SOURCE)
 #PATCH1      := v0.9.0..f7f6955.patch
 #SOURCES     := _topdir/SOURCES/$(SOURCE) _topdir/SOURCES/$(PATCH1)
-shortcommit0 := f7f6955
+shortcommit0 := 0f8f25b
 shortcommit1 := 9da3e5b
 shortcommit2 := 749783c
 shortcommit3 := 5092f6b

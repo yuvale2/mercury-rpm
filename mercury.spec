@@ -1,4 +1,4 @@
-%global commit0 f7f6955f140426b2a7c9e26dc35f8c8e1654d86a
+%global commit0 0f8f25bb3d57f117979de65cc3c05cf192cf4b31
 %global shortcommit0 %%(c=%%{commit0}; echo ${c:0:7})
 %global commit1 9da3e5bc847fa4187f42f60700e343a9ed09a161
 %global shortcommit1 %%(c=%%{commit1}; echo ${c:0:7})
@@ -103,5 +103,8 @@ cd build
 
 
 %changelog
+* Wed Oct 24 2018 Brian J. Murrell <brian.murrell@intel> - 0.9.0-1.git.0f8f25b
+- update mercury to git sha1 0f8f25bb3d57f117979de65cc3c05cf192cf4b31
+
 * Mon Aug 20 2018 Brian J. Murrell <brian.murrell@intel> - 0.9.0-1.git.f7f6955
 - initial package

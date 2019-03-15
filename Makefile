@@ -1,6 +1,6 @@
 NAME        := mercury
 VERSION     := 1.0.1
-RELEASE     := 1
+RELEASE     := 2
 DIST        := $(shell rpm --eval %{dist})
 SRPM        := _topdir/SRPMS/$(NAME)-$(VERSION)-$(RELEASE)$(DIST).src.rpm
 RPMS        := _topdir/RPMS/x86_64/$(NAME)-$(VERSION)-$(RELEASE)$(DIST).x86_64.rpm           \
@@ -9,8 +9,9 @@ RPMS        := _topdir/RPMS/x86_64/$(NAME)-$(VERSION)-$(RELEASE)$(DIST).x86_64.r
 SPEC        := $(NAME).spec
 SRC_EXT     := bz2
 SOURCE      := https://github.com/mercury-hpc/$(NAME)/releases/download/v$(VERSION)/$(NAME)-$(VERSION).tar.$(SRC_EXT)
-PATCH1      := https://github.com/mercury-hpc/mercury/commit/9f9dd80164a2b14b184f2b373efeb50a5fc80dc5.patch
-SOURCES     := _topdir/SOURCES/$(NAME)-$(VERSION).tar.$(SRC_EXT) _topdir/SOURCES/9f9dd80164a2b14b184f2b373efeb50a5fc80dc5.patch
+#PATCH1      := https://github.com/mercury-hpc/mercury/commit/9f9dd80164a2b14b184f2b373efeb50a5fc80dc5.patch
+PATCH1      := https://github.com/mercury-hpc/mercury/compare/c68870ffc0409c29eece5ba036c6efd3c22cee41^...v1.0.1.patch
+SOURCES     := _topdir/SOURCES/$(NAME)-$(VERSION).tar.$(SRC_EXT) _topdir/SOURCES/c68870ffc0409c29eece5ba036c6efd3c22cee41^...v1.0.1.patch #_topdir/SOURCES/9f9dd80164a2b14b184f2b373efeb50a5fc80dc5.patch
 TARGETS      := $(RPMS) $(SRPM)
 
 all: $(TARGETS)
@@ -25,7 +26,8 @@ _topdir/SOURCES/%: % | _topdir/SOURCES/
 $(NAME)-$(VERSION).tar.$(SRC_EXT):
 	curl -f -L -O '$(SOURCE)'
 
-9f9dd80164a2b14b184f2b373efeb50a5fc80dc5.patch:
+#9f9dd80164a2b14b184f2b373efeb50a5fc80dc5.patch:
+c68870ffc0409c29eece5ba036c6efd3c22cee41^...v1.0.1.patch:
 	curl -f -L -O '$(PATCH1)'
 
 # see https://stackoverflow.com/questions/2973445/ for why we subst

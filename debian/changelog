@@ -1,0 +1,7 @@
+mercury (1.0.1-1) unstable; urgency=medium
+
+  [ John Malmberg ]
+  * Patched Upstream release
+  * Experimental build for daos-stack project
+
+ -- John Malmberg <john.e.malmberg@intel.com>  Mon, 17 Jun 2019 19:43:11 +0000

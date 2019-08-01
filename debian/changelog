@@ -1,3 +1,8 @@
+mercury (1.0.1-5) unstable; urgency=medium
+
+  [ Yulu Jia ]
+  * Applied patches from upstream
+
 mercury (1.0.1-1) unstable; urgency=medium
 
   [ John Malmberg ]

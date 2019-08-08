@@ -1,0 +1,1052 @@
+--- b/COPYING
++++ a/COPYING
+@@ -1,4 +1,4 @@
++Copyright (C) 2013-2018, Argonne National Laboratory, Department of Energy,
+-Copyright (C) 2013-2019, Argonne National Laboratory, Department of Energy,
+                    UChicago Argonne, LLC and The HDF Group.
+ All rights reserved.
+ 
+--- b/Examples/src/example_rpc.c
++++ a/Examples/src/example_rpc.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Examples/src/example_rpc.h
++++ a/Examples/src/example_rpc.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Examples/src/example_rpc_client.c
++++ a/Examples/src/example_rpc_client.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Examples/src/example_rpc_engine.c
++++ a/Examples/src/example_rpc_engine.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Examples/src/example_rpc_engine.h
++++ a/Examples/src/example_rpc_engine.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Examples/src/example_rpc_server.c
++++ a/Examples/src/example_rpc_server.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Examples/src/example_snappy.c
++++ a/Examples/src/example_snappy.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Examples/src/example_snappy.h
++++ a/Examples/src/example_snappy.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Examples/src/example_snappy_client.c
++++ a/Examples/src/example_snappy_client.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Examples/src/example_snappy_server.c
++++ a/Examples/src/example_snappy_server.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/mercury_rpc_cb.c
++++ a/Testing/mercury_rpc_cb.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/mercury_rpc_cb.h
++++ a/Testing/mercury_rpc_cb.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/mercury_test.c
++++ a/Testing/mercury_test.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/mercury_test.h
++++ a/Testing/mercury_test.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/mercury_test_config.h.in
++++ a/Testing/mercury_test_config.h.in
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/mercury_test_drc.c
++++ a/Testing/mercury_test_drc.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/mercury_test_drc.h
++++ a/Testing/mercury_test_drc.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/na/na_test.c
++++ a/Testing/na/na_test.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/na/na_test.h
++++ a/Testing/na/na_test.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/na/na_test_getopt.c
++++ a/Testing/na/na_test_getopt.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/na/na_test_getopt.h
++++ a/Testing/na/na_test_getopt.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/na/test_cancel_client.c
++++ a/Testing/na/test_cancel_client.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/na/test_cancel_server.c
++++ a/Testing/na/test_cancel_server.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/na/test_client.c
++++ a/Testing/na/test_client.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/na/test_lat_client.c
++++ a/Testing/na/test_lat_client.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/na/test_lat_server.c
++++ a/Testing/na/test_lat_server.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/na/test_server.c
++++ a/Testing/na/test_server.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_bulk.c
++++ a/Testing/test_bulk.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_bulk.h
++++ a/Testing/test_bulk.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_bulk_seg.c
++++ a/Testing/test_bulk_seg.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_cancel.c
++++ a/Testing/test_cancel.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_drc_auth.c
++++ a/Testing/test_drc_auth.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_init.c
++++ a/Testing/test_init.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_multiple.c
++++ a/Testing/test_multiple.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_multiple.h
++++ a/Testing/test_multiple.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_nested.c
++++ a/Testing/test_nested.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_overflow.c
++++ a/Testing/test_overflow.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_overflow.h
++++ a/Testing/test_overflow.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_perf.c
++++ a/Testing/test_perf.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_pipeline.c
++++ a/Testing/test_pipeline.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_posix.c
++++ a/Testing/test_posix.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_posix.h
++++ a/Testing/test_posix.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_read_bw.c
++++ a/Testing/test_read_bw.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_rpc.c
++++ a/Testing/test_rpc.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_rpc.h
++++ a/Testing/test_rpc.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_rpc_lat.c
++++ a/Testing/test_rpc_lat.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_server.c
++++ a/Testing/test_server.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/Testing/test_write_bw.c
++++ a/Testing/test_write_bw.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury.c
++++ a/src/mercury.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury.h
++++ a/src/mercury.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_bulk.c
++++ a/src/mercury_bulk.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_bulk.h
++++ a/src/mercury_bulk.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_config.h.in
++++ a/src/mercury_config.h.in
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_core.c
++++ a/src/mercury_core.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_core.h
++++ a/src/mercury_core.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_core_header.c
++++ a/src/mercury_core_header.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_core_header.h
++++ a/src/mercury_core_header.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_core_types.h
++++ a/src/mercury_core_types.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_error.h
++++ a/src/mercury_error.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_header.c
++++ a/src/mercury_header.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_header.h
++++ a/src/mercury_header.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_hl.c
++++ a/src/mercury_hl.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_hl.h
++++ a/src/mercury_hl.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_hl_macros.h
++++ a/src/mercury_hl_macros.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_macros.h
++++ a/src/mercury_macros.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_private.h
++++ a/src/mercury_private.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_proc.c
++++ a/src/mercury_proc.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_proc.h
++++ a/src/mercury_proc.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_proc_buf.h
++++ a/src/mercury_proc_buf.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_proc_bulk.h
++++ a/src/mercury_proc_bulk.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/mercury_types.h
++++ a/src/mercury_types.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/na/na.c
++++ a/src/na/na.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/na/na.h
++++ a/src/na/na.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/na/na_bmi.c
++++ a/src/na/na_bmi.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/na/na_config.h.in
++++ a/src/na/na_config.h.in
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/na/na_error.h
++++ a/src/na/na_error.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/na/na_mpi.c
++++ a/src/na/na_mpi.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/na/na_mpi.h
++++ a/src/na/na_mpi.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/na/na_ofi.c
++++ a/src/na/na_ofi.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/na/na_plugin.h
++++ a/src/na/na_plugin.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/na/na_sm.c
++++ a/src/na/na_sm.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/na/na_types.h
++++ a/src/na/na_types.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/proc_extra/mercury_proc_string.h
++++ a/src/proc_extra/mercury_proc_string.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/proc_extra/mercury_string_object.c
++++ a/src/proc_extra/mercury_string_object.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/proc_extra/mercury_string_object.h
++++ a/src/proc_extra/mercury_string_object.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_atomic.h
++++ a/src/util/mercury_atomic.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_atomic_queue.c
++++ a/src/util/mercury_atomic_queue.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_atomic_queue.h
++++ a/src/util/mercury_atomic_queue.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_event.c
++++ a/src/util/mercury_event.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_event.h
++++ a/src/util/mercury_event.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_hash_string.h
++++ a/src/util/mercury_hash_string.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_list.h
++++ a/src/util/mercury_list.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_log.c
++++ a/src/util/mercury_log.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_log.h
++++ a/src/util/mercury_log.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_mem.c
++++ a/src/util/mercury_mem.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_mem.h
++++ a/src/util/mercury_mem.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_poll.c
++++ a/src/util/mercury_poll.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_poll.h
++++ a/src/util/mercury_poll.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_queue.h
++++ a/src/util/mercury_queue.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_request.c
++++ a/src/util/mercury_request.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_request.h
++++ a/src/util/mercury_request.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_thread.c
++++ a/src/util/mercury_thread.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_thread.h
++++ a/src/util/mercury_thread.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_thread_condition.c
++++ a/src/util/mercury_thread_condition.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_thread_condition.h
++++ a/src/util/mercury_thread_condition.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_thread_mutex.c
++++ a/src/util/mercury_thread_mutex.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_thread_mutex.h
++++ a/src/util/mercury_thread_mutex.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_thread_pool.c
++++ a/src/util/mercury_thread_pool.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_thread_pool.h
++++ a/src/util/mercury_thread_pool.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_thread_rwlock.c
++++ a/src/util/mercury_thread_rwlock.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_thread_rwlock.h
++++ a/src/util/mercury_thread_rwlock.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_thread_spin.c
++++ a/src/util/mercury_thread_spin.c
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_thread_spin.h
++++ a/src/util/mercury_thread_spin.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_time.h
++++ a/src/util/mercury_time.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_util_config.h.in
++++ a/src/util/mercury_util_config.h.in
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *
+--- b/src/util/mercury_util_error.h
++++ a/src/util/mercury_util_error.h
+@@ -1,5 +1,5 @@
+ /*
++ * Copyright (C) 2013-2018 Argonne National Laboratory, Department of Energy,
+- * Copyright (C) 2013-2019 Argonne National Laboratory, Department of Energy,
+  *                    UChicago Argonne, LLC and The HDF Group.
+  * All rights reserved.
+  *

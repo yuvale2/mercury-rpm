@@ -1,6 +1,6 @@
 Name:		mercury
 Version:	1.0.1
-Release:	8%{?dist}
+Release:	9%{?dist}
 
 Summary:	Mercury
 
@@ -8,8 +8,7 @@ Group:		Development/Libraries
 License:	ANL
 URL:		http://mercury-hpc.github.io/documentation/
 Source0:	https://github.com/mercury-hpc/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.bz2
-Patch1:		https://github.com/mercury-hpc/mercury/compare/v1.0.1...cc0807e8377e129945834d292be21a6667a8cbb3.patch
-Patch2:		rollback-version.patch
+Patch1:		https://github.com/mercury-hpc/mercury/compare/c68870ffc0409c29eece5ba036c6efd3c22cee41^...v1.0.1.patch
 
 BuildRequires:	openpa-devel
 BuildRequires:	libfabric-devel >= 1.5.0
@@ -28,8 +27,7 @@ Mercury devel
 
 %prep
 %setup -q
-%patch1 -p1
-%patch2 -p1
+%patch1 -R -p1
 
 %build
 mkdir build
@@ -68,6 +66,9 @@ cd build
 
 
 %changelog
+* Thu Aug 08 2019 Brian J. Murrell <brian.murrell@intel> - 1.0.1-9
+- revert previous update
+
 * Fri Aug 02 2019 Yulu Jia <yulu.jia@intel> - 1.0.1-8
 - update to cc0807 to include the HG_Cancel() fix.
 - roll the version number back to 1.0.1

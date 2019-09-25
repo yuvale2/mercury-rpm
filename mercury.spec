@@ -1,21 +1,20 @@
-Name:       mercury
-Version:    1.0.1
-Release:    10%{?dist}
+Name:		mercury
+Version:	1.0.1
+Release:	11%{?dist}
 
-Summary:    Mercury
+Summary:	Mercury
 
-Group:      Development/Libraries
-License:    ANL
-URL:        http://mercury-hpc.github.io/documentation/
-Source0:    https://github.com/mercury-hpc/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.bz2
-Patch1:     https://github.com/mercury-hpc/mercury/compare/v1.0.1...cc0807e8377e129945834d292be21a6667a8cbb3.patch
-Patch2:     https://github.com/mercury-hpc/mercury/compare/cc0807e8377e129945834d292be21a6667a8cbb3...f0b9f992793be46f1c6ae47b30d1c3ccb525cfbf.patch
+Group:		Development/Libraries
+License:	ANL
+URL:		http://mercury-hpc.github.io/documentation/
+Source0:	https://github.com/mercury-hpc/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.bz2
+Patch1:		https://github.com/mercury-hpc/mercury/compare/c68870ffc0409c29eece5ba036c6efd3c22cee41^...v1.0.1.patch
 
-BuildRequires: openpa-devel
-BuildRequires: libfabric-devel >= 1.5.0
-BuildRequires: cmake
-BuildRequires: boost-devel
-BuildRequires: gcc-c++
+BuildRequires:	openpa-devel
+BuildRequires:	libfabric-devel >= 1.5.0
+BuildRequires:	cmake
+BuildRequires:	boost-devel
+BuildRequires:	gcc-c++
 %if 0%{?sle_version} >= 150000
 # have choice for libffi.so.7()(64bit) needed by python3-base: ghc-bootstrap libffi7
 # have choice for libffi.so.7(LIBFFI_BASE_7.0)(64bit) needed by python3-base: ghc-bootstrap libffi7
@@ -31,20 +30,20 @@ BuildRequires: libffi7
 BuildRequires: libpsm_infinipath1
 %endif
 
+
 %description
 Mercury
 
 %package devel
-Summary:    Mercury devel package
-Requires:   %{name}%{?_isa} = %{version}-%{release}
+Summary:	Mercury devel package
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description devel
 Mercury devel
 
 %prep
 %setup -q
-%patch1 -p1
-%patch2 -p1
+%patch1 -R -p1
 
 %build
 mkdir build
@@ -90,39 +89,44 @@ cd build
 
 
 %changelog
+* Wed Sep 25 2019 Brian J. Murrell <brian.murrell@intel> - 1.0.1-11
+- Back out previous update
+  - not all consumers are ready for it yet so they need to
+    pin their BR
+
 * Fri Sep 20 2019 Brian J. Murrell <brian.murrell@intel> - 1.0.1-10
-- update to cc0807 to include the HG_Cancel() fix.
-- update to f0b9f9 to get latest changes
+- Update to cc0807 to include the HG_Cancel() fix.
+- Update to f0b9f9 to get latest changes
 
 * Thu Aug 08 2019 Brian J. Murrell <brian.murrell@intel> - 1.0.1-9
-- revert previous update
+- Revert previous update
 
 * Fri Aug 02 2019 Yulu Jia <yulu.jia@intel> - 1.0.1-8
-- update to cc0807 to include the HG_Cancel() fix.
-- roll the version number back to 1.0.1
+- Update to cc0807 to include the HG_Cancel() fix.
+- Roll the version number back to 1.0.1
 
 * Fri Aug 02 2019 Brian J. Murrell <brian.murrell@intel> - 1.0.1-7
-- revert back to the 1.0.1-4 release as the upgrade included
+- Revert back to the 1.0.1-4 release as the upgrade included
   in -5 (and the subsequent fix in -6) was premature
 
 * Thu Aug 01 2019 Brian J. Murrell <brian.murrell@intel> - 1.0.1-6
-- roll the version number back to 1.0.1
+- Roll the version number back to 1.0.1
 
 * Fri Jul 26 2019 Yulu Jia <yulu.jia@intel> - 1.0.1-5
-- update to cc0807 to include the HG_Cancel() fix.
+- Update to cc0807 to include the HG_Cancel() fix.
 
 * Thu May 02 2019 Brian J. Murrell <brian.murrell@intel> - 1.0.1-4
-- devel package needs to require the lib package
+- Devel package needs to require the lib package
 
 * Fri Mar 15 2019 Brian J. Murrell <brian.murrell@intel> - 1.0.1-2
-- add patch to revert back to Dec 06, 2018 c68870f
+- Add patch to revert back to Dec 06, 2018 c68870f
 
 * Mon Mar 11 2019 Brian J. Murrell <brian.murrell@intel> - 1.0.1-1
-- update to 1.0.1
-- add patch for "HG Core: fix missing static inline in mercury_core.h"
+- Update to 1.0.1
+- Add patch for "HG Core: fix missing static inline in mercury_core.h"
 
 * Wed Oct 24 2018 Brian J. Murrell <brian.murrell@intel> - 0.9.0-1.git.0f8f25b
-- update mercury to git sha1 0f8f25bb3d57f117979de65cc3c05cf192cf4b31
+- Update mercury to git sha1 0f8f25bb3d57f117979de65cc3c05cf192cf4b31
 
 * Mon Aug 20 2018 Brian J. Murrell <brian.murrell@intel> - 0.9.0-1.git.f7f6955
-- initial package
+- Initial package

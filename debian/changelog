@@ -1,3 +1,11 @@
+mercury (1.0.1-10) unstable; urgency=medium
+
+  [ Brian J. Murrell ]
+  * Update to cc0807 to include the HG_Cancel() fix.
+  * Update to f0b9f9 to get latest changes
+
+ -- Brian J. Murrell <brian.murrell@intel.com>  Fri, 20 Sep 2019 20:02:46 +0000
+
 mercury (1.0.1-9) unstable; urgency=medium
 
   [ Brian J. Murrell ]

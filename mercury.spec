@@ -1,33 +1,50 @@
-Name:		mercury
-Version:	1.0.1
-Release:	9%{?dist}
+Name:       mercury
+Version:    1.0.1
+Release:    10%{?dist}
 
-Summary:	Mercury
+Summary:    Mercury
 
-Group:		Development/Libraries
-License:	ANL
-URL:		http://mercury-hpc.github.io/documentation/
-Source0:	https://github.com/mercury-hpc/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.bz2
-Patch1:		https://github.com/mercury-hpc/mercury/compare/c68870ffc0409c29eece5ba036c6efd3c22cee41^...v1.0.1.patch
+Group:      Development/Libraries
+License:    ANL
+URL:        http://mercury-hpc.github.io/documentation/
+Source0:    https://github.com/mercury-hpc/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.bz2
+Patch1:     https://github.com/mercury-hpc/mercury/compare/v1.0.1...cc0807e8377e129945834d292be21a6667a8cbb3.patch
+Patch2:     https://github.com/mercury-hpc/mercury/compare/cc0807e8377e129945834d292be21a6667a8cbb3...f0b9f992793be46f1c6ae47b30d1c3ccb525cfbf.patch
 
-BuildRequires:	openpa-devel
-BuildRequires:	libfabric-devel >= 1.5.0
-BuildRequires:	cmake
-BuildRequires:	boost-devel
+BuildRequires: openpa-devel
+BuildRequires: libfabric-devel >= 1.5.0
+BuildRequires: cmake
+BuildRequires: boost-devel
+BuildRequires: gcc-c++
+%if 0%{?sle_version} >= 150000
+# have choice for libffi.so.7()(64bit) needed by python3-base: ghc-bootstrap libffi7
+# have choice for libffi.so.7(LIBFFI_BASE_7.0)(64bit) needed by python3-base: ghc-bootstrap libffi7
+# have choice for libffi.so.7(LIBFFI_CLOSURE_7.0)(64bit) needed by python3-base: ghc-bootstrap libffi7
+BuildRequires: libffi7
+%endif
+# according to https://en.opensuse.org/openSUSE:Build_Service_cross_distribution_howto
+# this should be 120300
+# according to my debugging, it's not even set until the rpm is being built
+%if 0%{?suse_version} >= 1315 && !0%{?is_opensuse}
+# have choice for libpsm_infinipath.so.1()(64bit) needed by libfabric1: libpsm2-compat libpsm_infinipath1
+# have choice for libpsm_infinipath.so.1()(64bit) needed by openmpi-libs: libpsm2-compat libpsm_infinipath1
+BuildRequires: libpsm_infinipath1
+%endif
 
 %description
 Mercury
 
 %package devel
-Summary:	Mercury devel package
-Requires:	%{name}%{?_isa} = %{version}-%{release}
+Summary:    Mercury devel package
+Requires:   %{name}%{?_isa} = %{version}-%{release}
 
 %description devel
 Mercury devel
 
 %prep
 %setup -q
-%patch1 -R -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 mkdir build
@@ -53,6 +70,13 @@ make %{?_smp_mflags}
 cd build
 %make_install
 
+#%if 0%{?suse_version} >= 1315
+#%post -n %{suse_libname} -p /sbin/ldconfig
+#%postun -n %{suse_libname} -p /sbin/ldconfig
+#%else
+%post -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
+#%endif
 
 %files
 %{_libdir}/*.so.*
@@ -66,6 +90,10 @@ cd build
 
 
 %changelog
+* Fri Sep 20 2019 Brian J. Murrell <brian.murrell@intel> - 1.0.1-10
+- update to cc0807 to include the HG_Cancel() fix.
+- update to f0b9f9 to get latest changes
+
 * Thu Aug 08 2019 Brian J. Murrell <brian.murrell@intel> - 1.0.1-9
 - revert previous update
 

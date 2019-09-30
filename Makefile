@@ -26,8 +26,8 @@ endif
 c68870ffc0409c29eece5ba036c6efd3c22cee41^...v1.0.1.patch:
 	curl -f -L -O '$(PATCH1)'
 
-sl42_REPOS     = $(OPENSUSE_REPOS_MIRROR)/repositories/science:/HPC/openSUSE_Leap_42.3/
-sle12_REPOS    = $(OPENSUSE_REPOS_MIRROR)/repositories/science:/HPC/openSUSE_Leap_42.3/
-sl15_REPOS     = $(OPENSUSE_REPOS_MIRROR)/repositories/science:/HPC/openSUSE_Leap_15.1/
+LEAP_42_REPOS = $(OPENSUSE_REPOS_MIRROR)/repositories/science:/HPC/openSUSE_Leap_42.3/
+SLES_12_REPOS = $(OPENSUSE_REPOS_MIRROR)/repositories/science:/HPC/openSUSE_Leap_42.3/
+SLES_15_REPOS = $(OPENSUSE_REPOS_MIRROR)/repositories/science:/HPC/openSUSE_Leap_15.1/
 
 include packaging/Makefile_packaging.mk

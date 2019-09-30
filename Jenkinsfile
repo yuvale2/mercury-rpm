@@ -42,5 +42,4 @@
 
 // no openpa for leap 15 yet
 // ubuntu deps need to catch up
-packageBuildingPipeline(['distros' : ['centos7', 'sles12.3', 'leap42.3',
-                                      'leap15']])
+packageBuildingPipeline()

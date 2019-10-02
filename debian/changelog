@@ -1,3 +1,9 @@
+mercury (1.0.1-13) unstable; urgency=medium
+  [ Brian J. Murrell ]
+  * Once again revert previous update
+
+ -- Brian J. Murrell <brian.murrell@intel.com>  Wed, 02 Oct 2019 18:00:31 -0400
+
 mercury (1.0.1-12) unstable; urgency=medium
 
   [ Brian J. Murrell ]

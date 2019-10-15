@@ -1,3 +1,9 @@
+mercury (1.0.1-15) unstable; urgency=medium
+  [ Alexander Oganezov ]
+  * Update to 616fee to get latest changes
+
+ -- Alexander Oganezov <alexander.a.oganezov@intel.com>  Tue, 15 Oct 2019 10:17:28 -0400
+
 mercury (1.0.1-14) unstable; urgency=medium
   [ Brian J. Murrell ]
   * Update to cc0807 to include the HG_Cancel() fix.

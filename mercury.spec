@@ -1,6 +1,6 @@
 Name:		mercury
 Version:	1.0.1
-Release:	15%{?dist}
+Release:	16%{?dist}
 
 Summary:	Mercury
 
@@ -44,9 +44,7 @@ Requires:	%{name}%{?_isa} = %{version}-%{release}
 Mercury devel
 
 %prep
-%setup -q
-%patch1 -p1
-%patch2 -p1
+%autosetup -p1
 
 %build
 mkdir build
@@ -92,6 +90,9 @@ cd build
 
 
 %changelog
+* Wed Oct 16 2019 Alexander Oganezov <alexander.a.oganezov@intel> - 1.0.1-16
+- Fixed spec to apply patch for 616fee properly
+
 * Tue Oct 15 2019 Alexander Oganezov <alexander.a.oganezov@intel> - 1.0.1-15
 - Update to 616fee to get latest changes
 

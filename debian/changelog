@@ -1,3 +1,9 @@
+mercury (1.0.1-16) unstable; urgency=medium
+  [ Alexander Oganezov ]
+  * Fix mercury.spec file to apply patch for 616fee properly
+
+ -- Alexander Oganezov <alexander.a.oganezov@intel.com>  Wed, 16 Oct 2019 10:17:28 -0400
+
 mercury (1.0.1-15) unstable; urgency=medium
   [ Alexander Oganezov ]
   * Update to 616fee to get latest changes

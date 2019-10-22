@@ -1,3 +1,9 @@
+mercury (1.0.1-18) unstable; urgency=medium
+  [ Alexander Oganezov ]
+  * Reversal of Update to 6a8b693
+
+ -- Alexander Oganezov <alexander.a.oganezov@intel.com>  Tue, 22 Oct 2019 10:17:28 -0400
+
 mercury (1.0.1-17) unstable; urgency=medium
   [ Alexander Oganezov ]
   * Update to 6a8b693 to get latest changes

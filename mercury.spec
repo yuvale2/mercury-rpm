@@ -1,6 +1,6 @@
 Name:		mercury
 Version:	1.0.1
-Release:	18%{?dist}
+Release:	19%{?dist}
 
 Summary:	Mercury
 
@@ -11,6 +11,7 @@ Source0:	https://github.com/mercury-hpc/%{name}/releases/download/v%{version}/%{
 Patch1:		https://github.com/mercury-hpc/mercury/compare/v1.0.1...cc0807e8377e129945834d292be21a6667a8cbb3.patch
 Patch2:		https://github.com/mercury-hpc/mercury/compare/cc0807e8377e129945834d292be21a6667a8cbb3...f0b9f992793be46f1c6ae47b30d1c3ccb525cfbf.patch
 Patch3:		https://github.com/mercury-hpc/mercury/compare/f0b9f992793be46f1c6ae47b30d1c3ccb525cfbf...616fee16a3c09eb93d804b627e64ea1c84c6b4d4.patch
+Patch4:		https://github.com/mercury-hpc/mercury/compare/616fee16a3c09eb93d804b627e64ea1c84c6b4d4...7b529b63e4003fb15ebdbf2dfdf29ab2a3d3c132.patch
 
 BuildRequires:	openpa-devel
 BuildRequires:	libfabric-devel >= 1.5.0
@@ -90,6 +91,9 @@ cd build
 
 
 %changelog
+* Wed Oct 23 2019 Alexander Oganezov <alexander.a.oganezov@intel> - 1.0.1-19
+- Update to 7b529b
+
 * Tue Oct 22 2019 Alexander Oganezov <alexander.a.oganezov@intel> - 1.0.1-18
 - Reverting from 6a8b693 due to mercury segfaults
 

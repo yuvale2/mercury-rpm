@@ -1,3 +1,9 @@
+mercury (1.0.1-20) unstable; urgency=medium
+  [ Alexander Oganezov ]
+  * sl_patch on top of 7b529b
+
+ -- Alexander Oganezov <alexander.a.oganezov@intel.com>  Thu, 31 Oct 2019 10:17:28 -0400
+
 mercury (1.0.1-19) unstable; urgency=medium
   [ Alexander Oganezov ]
   * Update to 7b529b

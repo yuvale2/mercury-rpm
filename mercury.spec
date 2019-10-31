@@ -1,6 +1,6 @@
 Name:		mercury
 Version:	1.0.1
-Release:	19%{?dist}
+Release:	20%{?dist}
 
 Summary:	Mercury
 
@@ -12,6 +12,7 @@ Patch1:		https://github.com/mercury-hpc/mercury/compare/v1.0.1...cc0807e8377e129
 Patch2:		https://github.com/mercury-hpc/mercury/compare/cc0807e8377e129945834d292be21a6667a8cbb3...f0b9f992793be46f1c6ae47b30d1c3ccb525cfbf.patch
 Patch3:		https://github.com/mercury-hpc/mercury/compare/f0b9f992793be46f1c6ae47b30d1c3ccb525cfbf...616fee16a3c09eb93d804b627e64ea1c84c6b4d4.patch
 Patch4:		https://github.com/mercury-hpc/mercury/compare/616fee16a3c09eb93d804b627e64ea1c84c6b4d4...7b529b63e4003fb15ebdbf2dfdf29ab2a3d3c132.patch
+Patch5:		https://github.com/mercury-hpc/mercury/compare/mercury_combined_7b529b.patch
 
 BuildRequires:	openpa-devel
 BuildRequires:	libfabric-devel >= 1.5.0
@@ -91,6 +92,9 @@ cd build
 
 
 %changelog
+* Thu Oct 31 2019 Alexander Oganezov <alexander.a.oganezov@intel> - 1.0.1-20
+- sl_patch on top of 7b529b
+
 * Wed Oct 23 2019 Alexander Oganezov <alexander.a.oganezov@intel> - 1.0.1-19
 - Update to 7b529b
 

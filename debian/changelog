@@ -1,3 +1,10 @@
+mercury (1.0.1-21) unstable; urgency=medium
+  [ Alexander Oganezov ]
+  * Removed sl_patch on top of 7b529b
+  * Updated to 9889a0
+
+ -- Alexander Oganezov <alexander.a.oganezov@intel.com>  Mon, 2 Dec 2019 10:17:28 -0400
+
 mercury (1.0.1-20) unstable; urgency=medium
   [ Alexander Oganezov ]
   * sl_patch on top of 7b529b

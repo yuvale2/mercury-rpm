@@ -1,18 +1,29 @@
-Name:		mercury
-Version:	1.0.1
-Release:	21%{?dist}
+%global mercury_commit c2c262813811c3ede28ee32fdebbffd417a7cb80
+%global shortmercury_commit %%(c=%%{mercury_commit}; echo ${c:0:7})
+%global kwsys_commit 9da3e5bc847fa4187f42f60700e343a9ed09a161
+%global shortkwsys_commit %%(c=%%{kwsys_commit}; echo ${c:0:7})
+%global boost_commit 749783cf72ae26dd668c5539afd9990d0cf0a053
+%global shortboost_commit %%(c=%%{boost_commit}; echo ${c:0:7})
+%global mchecksum_commit 3c76b32e5f693f03f51123a793b2032b49f45b16
+%global shortmchecksum_commit %%(c=%%{mchecksum_commit}; echo ${c:0:7})
+
+%bcond_with use_release
+
+Name: mercury
+Version: 2.0.0a1
+Release: 0.1.git.%{shortmercury_commit}%{?dist}
 
 Summary:	Mercury
 
 Group:		Development/Libraries
 License:	ANL
 URL:		http://mercury-hpc.github.io/documentation/
-Source0:	https://github.com/mercury-hpc/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.bz2
-Patch1:		https://github.com/mercury-hpc/mercury/compare/v1.0.1...cc0807e8377e129945834d292be21a6667a8cbb3.patch
-Patch2:		https://github.com/mercury-hpc/mercury/compare/cc0807e8377e129945834d292be21a6667a8cbb3...f0b9f992793be46f1c6ae47b30d1c3ccb525cfbf.patch
-Patch3:		https://github.com/mercury-hpc/mercury/compare/f0b9f992793be46f1c6ae47b30d1c3ccb525cfbf...616fee16a3c09eb93d804b627e64ea1c84c6b4d4.patch
-Patch4:		https://github.com/mercury-hpc/mercury/compare/616fee16a3c09eb93d804b627e64ea1c84c6b4d4...7b529b63e4003fb15ebdbf2dfdf29ab2a3d3c132.patch
-Patch5:		https://github.com/mercury-hpc/mercury/compare/7b529b63e4003fb15ebdbf2dfdf29ab2a3d3c132...9889a0d0ba8854c1a0c2bd186a01fac4f57edada.patch
+Source0:	https://github.com/mercury-hpc/%{name}/archive/v%{version}.tar.gz
+Patch1:		https://github.com/mercury-hpc/mercury/compare/v2.0.0a1..%{mercury_commit}.patch
+Patch2:		https://github.com/mercury-hpc/mercury/compare/c2c262813811c3ede28ee32fdebbffd417a7cb80...b580971d17ad460529a4516e4c79f0aead7b1515.patch
+Source1:	https://github.com/mercury-hpc/kwsys/archive/%{shortkwsys_commit}.tar.gz
+Source2:	https://github.com/mercury-hpc/preprocessor/archive/%{shortboost_commit}.tar.gz
+Source3:	https://github.com/mercury-hpc/mchecksum/archive/%{shortmchecksum_commit}.tar.gz
 
 BuildRequires:	openpa-devel
 BuildRequires:	libfabric-devel >= 1.5.0
@@ -46,7 +57,24 @@ Requires:	%{name}%{?_isa} = %{version}-%{release}
 Mercury devel
 
 %prep
+%if %{with use_release}
 %autosetup -p1
+%else
+%setup -q
+%patch1 -p1
+%patch2 -p1
+rmdir Testing/driver/kwsys/
+tar -C Testing/driver/ -xzf %{SOURCE1}
+mv Testing/driver/kwsys{-%{kwsys_commit},}
+rmdir src/boost
+%endif
+tar -C src -xzf %{SOURCE2}
+mv src/preprocessor-%{boost_commit} src/boost
+%if ! %{with use_release}
+rmdir src/mchecksum
+tar -C src -xzf %{SOURCE3}
+mv src/mchecksum{-%{mchecksum_commit},}
+%endif
 
 %build
 mkdir build
@@ -92,6 +120,13 @@ cd build
 
 
 %changelog
+* Tue Feb 04 2020 Brian J. Murrell <brian.murrell@intel.com> - 2.0.0a1-0.1
+- Update to 2.0.0a1
+
+* Tue Jan 28 2020 Yulu Jia <yulu.jia@intel.com> - 1.0.1-22
+- Update to c2c2628
+- Apply patch to enable ip:port URI format for psm2
+
 * Mon Dec 2 2019 Alexander Oganezov <alexander.a.oganezov@intel> - 1.0.1-21
 - Removed sl_patch on top of 7b529b
 - Updated to 9889a0

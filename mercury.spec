@@ -20,7 +20,7 @@ License:	ANL
 URL:		http://mercury-hpc.github.io/documentation/
 Source0:	https://github.com/mercury-hpc/%{name}/archive/v%{version}.tar.gz
 Patch1:		https://github.com/mercury-hpc/mercury/compare/v2.0.0a1..%{mercury_commit}.patch
-Patch2:		https://github.com/mercury-hpc/mercury/compare/c2c262813811c3ede28ee32fdebbffd417a7cb80...b580971d17ad460529a4516e4c79f0aead7b1515.patch
+Patch2:		https://github.com/mercury-hpc/mercury/compare/c2c262813811c3ede28ee32fdebbffd417a7cb80..bb3fafb15ffab4c2b7a84d3262cc439435526ee8.patch
 Source1:	https://github.com/mercury-hpc/kwsys/archive/%{shortkwsys_commit}.tar.gz
 Source2:	https://github.com/mercury-hpc/preprocessor/archive/%{shortboost_commit}.tar.gz
 Source3:	https://github.com/mercury-hpc/mchecksum/archive/%{shortmchecksum_commit}.tar.gz

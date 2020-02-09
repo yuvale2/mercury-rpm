@@ -1,7 +1,7 @@
 From bb3fafb15ffab4c2b7a84d3262cc439435526ee8 Mon Sep 17 00:00:00 2001
 From: Yulu Jia <yulu.jia@intel.com>
 Date: Tue, 15 Oct 2019 11:00:17 -0700
-Subject: [PATCH] NA OFI: use ip addr for psm2
+Subject: [PATCH 1/2] NA OFI: use ip addr for psm2
 
 let psm2 uses ip:port address format so that user can specify uri at
 init time.
@@ -492,4 +492,50 @@ index 5c13067a..c52168ee 100644
 +            src_addrs, &src_err_addr_ptr, &src_err_addrlen, &actual_count);
          NA_CHECK_NA_ERROR(out, ret,
              "Could not read events from context CQ");
+ 
+
+From 6cbd9d4402db6a34dfb7e9dbf2e826ee90c6a64a Mon Sep 17 00:00:00 2001
+From: Yulu Jia <yulu.jia@intel.com>
+Date: Tue, 15 Oct 2019 11:00:17 -0700
+Subject: [PATCH 2/2] NA OFI: use ip addr for psm2
+
+let psm2 uses ip:port address format so that user can specify uri at
+init time.
+
+Signed-off-by: Yulu Jia <yulu.jia@intel.com>
+---
+ src/na/na_ofi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/src/na/na_ofi.c b/src/na/na_ofi.c
+index c52168ee..ec0f6199 100644
+--- a/src/na/na_ofi.c
++++ b/src/na/na_ofi.c
+@@ -1268,7 +1268,8 @@ na_ofi_av_insert(struct na_ofi_domain *domain, const void *addr,
+     int rc = 0;
+     int ret = 0;
+ 
+-    if (na_ofi_prov_addr_format[domain->prov_type] == FI_ADDR_PSMX2) {
++    if (na_ofi_prov_addr_format[domain->prov_type] == FI_ADDR_PSMX2 ||
++        na_ofi_prov_addr_format[domain->prov_type] == FI_SOCKADDR_IN) {
+         struct na_ofi_sin_addr *sin_addr = addr;
+         node_str = inet_ntoa(sin_addr->sin.sin_addr);
+         sprintf (service_str, "%d", ntohs(sin_addr->sin.sin_port));
+@@ -1288,7 +1289,7 @@ na_ofi_av_insert(struct na_ofi_domain *domain, const void *addr,
+     }
+ 
+     na_ofi_domain_lock(domain);
+-    rc = fi_av_insert(domain->fi_av, tmp_info->dest_addr, 1, fi_addr,
++    rc = fi_av_insert(domain->fi_av, addr, 1, fi_addr,
+             0 /* flags */, NULL /* context */);
+     na_ofi_domain_unlock(domain);
+ 
+@@ -1323,6 +1324,8 @@ na_ofi_av_insert(struct na_ofi_domain *domain, const void *addr,
+     free(peer_addr);
+     */
+ out:
++    if (tmp_info)
++        fi_freeinfo(tmp_info);
+     return ret;
+ }
  

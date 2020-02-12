@@ -11,7 +11,7 @@
 
 Name: mercury
 Version: 2.0.0a1
-Release: 0.2.git.%{shortmercury_commit}%{?dist}
+Release: 0.3.git.%{shortmercury_commit}%{?dist}
 
 Summary:	Mercury
 
@@ -20,7 +20,6 @@ License:	ANL
 URL:		http://mercury-hpc.github.io/documentation/
 Source0:	https://github.com/mercury-hpc/%{name}/archive/v%{version}.tar.gz
 Patch1:		https://github.com/mercury-hpc/mercury/compare/v2.0.0a1..%{mercury_commit}.patch
-Patch2:		https://github.com/mercury-hpc/mercury/compare/c2c262813811c3ede28ee32fdebbffd417a7cb80..6cbd9d4402db6a34dfb7e9dbf2e826ee90c6a64a.patch
 Source1:	https://github.com/mercury-hpc/kwsys/archive/%{shortkwsys_commit}.tar.gz
 Source2:	https://github.com/mercury-hpc/preprocessor/archive/%{shortboost_commit}.tar.gz
 Source3:	https://github.com/mercury-hpc/mchecksum/archive/%{shortmchecksum_commit}.tar.gz
@@ -62,7 +61,6 @@ Mercury devel
 %else
 %setup -q
 %patch1 -p1
-%patch2 -p1
 rmdir Testing/driver/kwsys/
 tar -C Testing/driver/ -xzf %{SOURCE1}
 mv Testing/driver/kwsys{-%{kwsys_commit},}
@@ -120,6 +118,9 @@ cd build
 
 
 %changelog
+* Tue Feb 11 2020 Yulu Jia <yulu.jia@intel.com> - 2.0.0a1-0.3
+- Remove nameserver patch
+
 * Sun Feb 09 2020 Yulu Jia <yulu.jia@intel.com> - 2.0.0a1-0.2
 - Update patch to enable ip:port URI format for psm2
 

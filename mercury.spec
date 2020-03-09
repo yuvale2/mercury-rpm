@@ -1,4 +1,4 @@
-%global mercury_commit c2c262813811c3ede28ee32fdebbffd417a7cb80
+%global mercury_commit 5d0cd776e140f76f27203d6f28d0fb3b092c9d03
 %global shortmercury_commit %%(c=%%{mercury_commit}; echo ${c:0:7})
 %global kwsys_commit 9da3e5bc847fa4187f42f60700e343a9ed09a161
 %global shortkwsys_commit %%(c=%%{kwsys_commit}; echo ${c:0:7})
@@ -11,7 +11,7 @@
 
 Name: mercury
 Version: 2.0.0a1
-Release: 0.3.git.%{shortmercury_commit}%{?dist}
+Release: 0.4.git.%{shortmercury_commit}%{?dist}
 
 Summary:	Mercury
 
@@ -118,6 +118,9 @@ cd build
 
 
 %changelog
+* Thu Mar 05 2020 Vikram Chhabra <vikram.chhabra@intel.com> - 2.0.0a1-0.4
+- Updated to latest master with HG_Forward fix.
+
 * Tue Feb 11 2020 Yulu Jia <yulu.jia@intel.com> - 2.0.0a1-0.3
 - Remove nameserver patch
 

@@ -4594,7 +4594,7 @@ index b383c1d..c31d194 100644
              ret = HG_PROTOCOL_ERROR;
              goto done;
 diff --git a/Testing/na/na_test.c b/Testing/na/na_test.c
-index 0a48600..b72cae1 100644
+index 0a48600..52a8882 100644
 --- a/Testing/na/na_test.c
 +++ b/Testing/na/na_test.c
 @@ -29,7 +29,7 @@
@@ -4627,7 +4627,7 @@ index 0a48600..b72cae1 100644
  /*---------------------------------------------------------------------------*/
  void
  na_test_usage(const char *execname)
-@@ -80,6 +85,7 @@ na_test_usage(const char *execname)
+@@ -80,10 +85,13 @@ na_test_usage(const char *execname)
      printf("    -h, --help          Print a usage message and exit\n");
      printf("    -c, --comm          Select NA plugin\n"
             "                        NA plugins: bmi, mpi, cci, etc\n");
@@ -4635,7 +4635,13 @@ index 0a48600..b72cae1 100644
      printf("    -p, --protocol      Select plugin protocol\n"
             "                        Available protocols: tcp, ib, etc\n");
      printf("    -H, --hostname      Select hostname / IP address to use\n"
-@@ -116,6 +122,9 @@ na_test_parse_options(int argc, char *argv[],
+            "                        Default: any\n");
++    printf("    -P, --port          Select port to use\n"
++           "                        Default: any\n");
+     printf("    -L, --listen        Listen for incoming messages\n");
+     printf("    -S, --self_send     Send to self\n");
+     printf("    -a, --auth          Run auth key service\n");
+@@ -116,6 +124,9 @@ na_test_parse_options(int argc, char *argv[],
                  if (!na_test_info->comm)
                      na_test_info->comm = strdup(na_test_opt_arg_g);
                  break;
@@ -4645,7 +4651,26 @@ index 0a48600..b72cae1 100644
              case 'p': /* Protocol */
                  /* Prevent from overriding protocol */
                  if (!na_test_info->protocol)
-@@ -161,7 +170,7 @@ na_test_parse_options(int argc, char *argv[],
+@@ -124,6 +135,9 @@ na_test_parse_options(int argc, char *argv[],
+             case 'H': /* hostname */
+                 na_test_info->hostname = strdup(na_test_opt_arg_g);
+                 break;
++            case 'P': /* hostname */
++                na_test_info->port = atoi(na_test_opt_arg_g);
++                break;
+             case 'L': /* listen */
+                 na_test_info->listen = NA_TRUE;
+                 break;
+@@ -140,7 +154,7 @@ na_test_parse_options(int argc, char *argv[],
+                 na_test_info->auth = NA_TRUE;
+                 break;
+             case 'k': /* key */
+-        //        na_test_info->key = strdup(na_test_opt_arg_g);
++                na_test_info->key = strdup(na_test_opt_arg_g);
+                 break;
+             case 'l': /* loop */
+                 na_test_info->loop = atoi(na_test_opt_arg_g);
+@@ -161,7 +175,7 @@ na_test_parse_options(int argc, char *argv[],
      }
      na_test_opt_ind_g = 1;
  
@@ -4654,7 +4679,7 @@ index 0a48600..b72cae1 100644
          na_test_usage(argv[0]);
          exit(1);
      }
-@@ -170,7 +179,7 @@ na_test_parse_options(int argc, char *argv[],
+@@ -170,7 +184,7 @@ na_test_parse_options(int argc, char *argv[],
  }
  
  /*---------------------------------------------------------------------------*/
@@ -4663,7 +4688,15 @@ index 0a48600..b72cae1 100644
  static void
  na_test_mpi_init(struct na_test_info *na_test_info)
  {
-@@ -262,13 +271,16 @@ na_test_gen_config(struct na_test_info *na_test_info)
+@@ -254,21 +268,22 @@ na_test_mpi_finalize(struct na_test_info *na_test_info)
+ static char *
+ na_test_gen_config(struct na_test_info *na_test_info)
+ {
+-    unsigned int base_port = 22222;
+-    static unsigned int port_incr = 0;
+     char *info_string = NULL, *info_string_ptr = NULL;
+     na_return_t ret = NA_SUCCESS;
+ 
      info_string = (char *) malloc(sizeof(char) * NA_TEST_MAX_ADDR_NAME);
      if (!info_string) {
          NA_LOG_ERROR("Could not allocate info string");
@@ -4683,22 +4716,25 @@ index 0a48600..b72cae1 100644
  
      if (strcmp("sm", na_test_info->protocol) == 0) {
  #if defined(PR_SET_PTRACER) && defined(PR_SET_PTRACER_ANY)
-@@ -291,7 +303,7 @@ na_test_gen_config(struct na_test_info *na_test_info)
+@@ -291,7 +306,8 @@ na_test_gen_config(struct na_test_info *na_test_info)
  #endif
          if (na_test_info->listen) {
              /* special-case SM (pid:id) */
 -            sprintf(info_string_ptr, "://%d/%d", (int) getpid(), port_incr);
-+            sprintf(info_string_ptr, "%d/%d", (int) getpid(), port_incr);
++            sprintf(info_string_ptr, "%d/%d", (int) getpid(),
++                na_test_info->port);
          }
      } else if ((strcmp("tcp", na_test_info->protocol) == 0)
          || (strcmp("verbs;ofi_rxm", na_test_info->protocol) == 0)
-@@ -302,21 +314,21 @@ na_test_gen_config(struct na_test_info *na_test_info)
+@@ -301,27 +317,23 @@ na_test_gen_config(struct na_test_info *na_test_info)
+         if (!na_test_info->hostname) {
              /* Nothing */
          } else if (na_test_info->listen) {
-             base_port += (unsigned int) na_test_info->mpi_comm_rank;
+-            base_port += (unsigned int) na_test_info->mpi_comm_rank;
 -            sprintf(info_string_ptr, "://%s:%d", na_test_info->hostname,
+-                base_port + port_incr);
 +            sprintf(info_string_ptr, "%s:%d", na_test_info->hostname,
-                 base_port + port_incr);
++                na_test_info->port + na_test_info->mpi_comm_rank);
          } else
 -            sprintf(info_string_ptr, "://%s", na_test_info->hostname);
 +            sprintf(info_string_ptr, "%s", na_test_info->hostname);
@@ -4707,10 +4743,11 @@ index 0a48600..b72cae1 100644
      } else if (strcmp("dynamic", na_test_info->protocol) == 0) {
          /* Nothing */
      } else if (strcmp("gni", na_test_info->protocol) == 0) {
-         base_port += (unsigned int) na_test_info->mpi_comm_rank;
+-        base_port += (unsigned int) na_test_info->mpi_comm_rank;
 -        sprintf(info_string_ptr, "://%s:%d", na_test_info->hostname,
+-            base_port + port_incr);
 +        sprintf(info_string_ptr, "%s:%d", na_test_info->hostname,
-             base_port + port_incr);
++            na_test_info->port + na_test_info->mpi_comm_rank);
      } else {
          NA_LOG_ERROR("Unknown protocol: %s", na_test_info->protocol);
 -        ret = NA_INVALID_PARAM;
@@ -4718,6 +4755,11 @@ index 0a48600..b72cae1 100644
          goto done;
      }
  
+-    port_incr++;
+-
+ done:
+     if (ret != NA_SUCCESS) {
+         free(info_string);
 @@ -336,10 +348,10 @@ na_test_set_config(const char *addr_name)
  {
      FILE *config = NULL;
@@ -4834,7 +4876,7 @@ index 0a48600..b72cae1 100644
  #else
      (void) na_test_info;
 diff --git a/Testing/na/na_test.h b/Testing/na/na_test.h
-index 62c1b61..67023f7 100644
+index 62c1b61..34907b1 100644
 --- a/Testing/na/na_test.h
 +++ b/Testing/na/na_test.h
 @@ -15,7 +15,7 @@
@@ -4846,15 +4888,18 @@ index 62c1b61..67023f7 100644
  # include <mpi.h>
  #endif
  
-@@ -27,6 +27,7 @@ struct na_test_info {
+@@ -27,8 +27,10 @@ struct na_test_info {
      na_class_t *na_class;       /* NA class */
      char *target_name;          /* Target name */
      char *comm;                 /* Comm/Plugin name */
 +    char *domain;               /* Domain name */
      char *protocol;             /* Protocol name */
      char *hostname;             /* Hostname */
++    int port;                   /* Port */
      na_bool_t listen;           /* Listen */
-@@ -39,7 +40,7 @@ struct na_test_info {
+     na_bool_t mpi_static;       /* MPI static comm */
+     na_bool_t self_send;        /* Self send */
+@@ -39,7 +41,7 @@ struct na_test_info {
      na_uint8_t max_contexts;    /* Max contexts */
      na_bool_t verbose;          /* Verbose mode */
      int max_number_of_peers;    /* Max number of peers */
@@ -4864,22 +4909,25 @@ index 62c1b61..67023f7 100644
      na_bool_t mpi_no_finalize;  /* Prevent from finalizing MPI */
  #endif
 diff --git a/Testing/na/na_test_getopt.c b/Testing/na/na_test_getopt.c
-index 3f2005d..54f9c8d 100644
+index 3f2005d..96b90ba 100644
 --- a/Testing/na/na_test_getopt.c
 +++ b/Testing/na/na_test_getopt.c
-@@ -17,10 +17,11 @@
+@@ -17,12 +17,14 @@
  
  int na_test_opt_ind_g = 1; /* token pointer */
  const char *na_test_opt_arg_g = NULL; /* flag argument (or value) */
 -const char *na_test_short_opt_g = "hc:p:H:LsSak:l:t:bmC:V";
-+const char *na_test_short_opt_g = "hc:d:p:H:LsSak:l:t:bmC:V";
++const char *na_test_short_opt_g = "hc:d:p:H:P:LsSak:l:t:bmC:V";
  const struct na_test_opt na_test_opt_g[] = {
      { "help", no_arg, 'h'},
      { "comm", require_arg, 'c' },
 +    { "domain", require_arg, 'd' },
      { "protocol", require_arg, 'p' },
      { "hostname", require_arg, 'H' },
++    { "port", require_arg, 'P' },
      { "listen", no_arg, 'L' },
+     { "mpi_static", no_arg, 's' },
+     { "self_send", no_arg, 'S' },
 diff --git a/Testing/na/test_lat_client.c b/Testing/na/test_lat_client.c
 index e0d2c16..cd03c5e 100644
 --- a/Testing/na/test_lat_client.c
@@ -13952,7 +14000,7 @@ index fe0e00f..108ec03 100644
  
  #endif /* MERCURY_CONFIG_H */
 diff --git a/src/mercury_core.c b/src/mercury_core.c
-index f114699..76c7718 100644
+index f114699..446440b 100644
 --- a/src/mercury_core.c
 +++ b/src/mercury_core.c
 @@ -25,6 +25,7 @@
@@ -15500,7 +15548,7 @@ index f114699..76c7718 100644
      return (int) completed;
  }
  
-@@ -2230,103 +2176,77 @@ hg_core_recv_input_cb(const struct na_cb_info *callback_info)
+@@ -2230,103 +2176,80 @@ hg_core_recv_input_cb(const struct na_cb_info *callback_info)
      const struct na_cb_info_recv_unexpected *na_cb_info_recv_unexpected =
          &callback_info->info.recv_unexpected;
  #ifndef HG_HAS_POST_LIMIT
@@ -15537,6 +15585,9 @@ index f114699..76c7718 100644
 +    } else
 +        HG_CHECK_ERROR_NORET(callback_info->ret != NA_SUCCESS, done,
 +            "Error in NA callback (s)", NA_Error_to_string(callback_info->ret));
++
++    /* Reset ret value */
++    hg_core_handle->ret = HG_SUCCESS;
  
      /* Fill unexpected info */
      hg_core_handle->core_handle.info.addr->na_addr =
@@ -15643,7 +15694,7 @@ index f114699..76c7718 100644
      return (int) completed;
  }
  
-@@ -2345,10 +2265,7 @@ hg_core_process_input(struct hg_core_private_handle *hg_core_handle,
+@@ -2345,10 +2268,7 @@ hg_core_process_input(struct hg_core_private_handle *hg_core_handle,
      /* Get and verify input header */
      ret = hg_core_proc_header_request(&hg_core_handle->core_handle,
          &hg_core_handle->in_header, HG_DECODE);
@@ -15655,7 +15706,7 @@ index f114699..76c7718 100644
  
      /* Get operation ID from header */
      hg_core_handle->core_handle.info.id =
-@@ -2372,21 +2289,17 @@ hg_core_process_input(struct hg_core_private_handle *hg_core_handle,
+@@ -2372,21 +2292,17 @@ hg_core_process_input(struct hg_core_private_handle *hg_core_handle,
  
      /* Must let upper layer get extra payload if HG_CORE_MORE_DATA is set */
      if (hg_core_handle->in_header.msg.request.flags & HG_CORE_MORE_DATA) {
@@ -15682,7 +15733,7 @@ index f114699..76c7718 100644
          *completed = HG_FALSE;
      } else
          *completed = HG_TRUE;
-@@ -2401,28 +2314,23 @@ hg_core_send_output_cb(const struct na_cb_info *callback_info)
+@@ -2401,28 +2317,23 @@ hg_core_send_output_cb(const struct na_cb_info *callback_info)
  {
      struct hg_core_private_handle *hg_core_handle =
          (struct hg_core_private_handle *) callback_info->arg;
@@ -15720,7 +15771,7 @@ index f114699..76c7718 100644
      return (int) completed;
  }
  
-@@ -2432,36 +2340,39 @@ hg_core_recv_output_cb(const struct na_cb_info *callback_info)
+@@ -2432,36 +2343,39 @@ hg_core_recv_output_cb(const struct na_cb_info *callback_info)
  {
      struct hg_core_private_handle *hg_core_handle =
          (struct hg_core_private_handle *) callback_info->arg;
@@ -15781,7 +15832,7 @@ index f114699..76c7718 100644
      return (int) completed;
  }
  
-@@ -2474,11 +2385,9 @@ hg_core_process_output(struct hg_core_private_handle *hg_core_handle,
+@@ -2474,11 +2388,9 @@ hg_core_process_output(struct hg_core_private_handle *hg_core_handle,
      hg_return_t ret = HG_SUCCESS;
  
      /* Get and verify output header */
@@ -15796,7 +15847,7 @@ index f114699..76c7718 100644
  
      /* Get return code from header */
      hg_core_handle->ret =
-@@ -2488,17 +2397,14 @@ hg_core_process_output(struct hg_core_private_handle *hg_core_handle,
+@@ -2488,17 +2400,14 @@ hg_core_process_output(struct hg_core_private_handle *hg_core_handle,
  
      /* Must let upper layer get extra payload if HG_CORE_MORE_DATA is set */
      if (hg_core_handle->out_header.msg.response.flags & HG_CORE_MORE_DATA) {
@@ -15820,7 +15871,7 @@ index f114699..76c7718 100644
          *completed = HG_FALSE;
      } else
          *completed = HG_TRUE;
-@@ -2522,15 +2428,15 @@ hg_core_send_ack(hg_core_handle_t handle)
+@@ -2522,15 +2431,15 @@ hg_core_send_ack(hg_core_handle_t handle)
      /* Allocate buffer for ack */
      hg_core_handle->ack_buf = NA_Msg_buf_alloc(hg_core_handle->na_class,
          sizeof(hg_uint8_t), &hg_core_handle->ack_buf_plugin_data);
@@ -15844,7 +15895,7 @@ index f114699..76c7718 100644
      na_ret = NA_Msg_send_expected(hg_core_handle->na_class,
          hg_core_handle->na_context, hg_core_send_ack_cb, hg_core_handle,
          hg_core_handle->ack_buf, sizeof(hg_uint8_t),
-@@ -2538,13 +2444,21 @@ hg_core_send_ack(hg_core_handle_t handle)
+@@ -2538,13 +2447,21 @@ hg_core_send_ack(hg_core_handle_t handle)
          hg_core_handle->core_handle.info.addr->na_addr,
          hg_core_handle->core_handle.info.context_id, hg_core_handle->tag,
          &hg_core_handle->na_ack_op_id);
@@ -15872,7 +15923,7 @@ index f114699..76c7718 100644
      return ret;
  }
  
-@@ -2554,28 +2468,21 @@ hg_core_send_ack_cb(const struct na_cb_info *callback_info)
+@@ -2554,28 +2471,21 @@ hg_core_send_ack_cb(const struct na_cb_info *callback_info)
  {
      struct hg_core_private_handle *hg_core_handle =
          (struct hg_core_private_handle *) callback_info->arg;
@@ -15909,7 +15960,7 @@ index f114699..76c7718 100644
      return (int) completed;
  }
  
-@@ -2585,28 +2492,21 @@ hg_core_recv_ack_cb(const struct na_cb_info *callback_info)
+@@ -2585,28 +2495,21 @@ hg_core_recv_ack_cb(const struct na_cb_info *callback_info)
  {
      struct hg_core_private_handle *hg_core_handle =
          (struct hg_core_private_handle *) callback_info->arg;
@@ -15946,7 +15997,7 @@ index f114699..76c7718 100644
      return (int) completed;
  }
  
-@@ -2640,15 +2540,12 @@ hg_core_self_cb(const struct hg_core_cb_info *callback_info)
+@@ -2640,15 +2543,12 @@ hg_core_self_cb(const struct hg_core_cb_info *callback_info)
  
      /* Process output */
      ret = hg_core_process_output(hg_core_handle, &completed, hg_core_complete);
@@ -15966,7 +16017,7 @@ index f114699..76c7718 100644
      }
  
  done:
-@@ -2667,18 +2564,12 @@ hg_core_process_self(struct hg_core_private_handle *hg_core_handle)
+@@ -2667,18 +2567,12 @@ hg_core_process_self(struct hg_core_private_handle *hg_core_handle)
  
      /* Process input */
      ret = hg_core_process_input(hg_core_handle, &completed);
@@ -15987,7 +16038,7 @@ index f114699..76c7718 100644
      }
  
  done:
-@@ -2701,15 +2592,12 @@ hg_core_process(struct hg_core_private_handle *hg_core_handle)
+@@ -2701,15 +2595,12 @@ hg_core_process(struct hg_core_private_handle *hg_core_handle)
      hg_thread_spin_unlock(&HG_CORE_HANDLE_CLASS(hg_core_handle)->func_map_lock);
      if (!hg_core_rpc_info) {
          HG_LOG_WARNING("Could not find RPC ID in function map");
@@ -16006,7 +16057,7 @@ index f114699..76c7718 100644
  
      /* Cache RPC info */
      hg_core_handle->core_handle.rpc_info = hg_core_rpc_info;
-@@ -2720,10 +2608,7 @@ hg_core_process(struct hg_core_private_handle *hg_core_handle)
+@@ -2720,10 +2611,7 @@ hg_core_process(struct hg_core_private_handle *hg_core_handle)
  
      /* Execute RPC callback */
      ret = hg_core_rpc_info->rpc_cb((hg_core_handle_t) hg_core_handle);
@@ -16018,7 +16069,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -2732,22 +2617,20 @@ done:
+@@ -2732,22 +2620,20 @@ done:
  /*---------------------------------------------------------------------------*/
  static HG_INLINE hg_return_t
  hg_core_complete_na(struct hg_core_private_handle *hg_core_handle,
@@ -16048,7 +16099,7 @@ index f114699..76c7718 100644
          /* Increment number of entries added to completion queue */
          *completed = HG_TRUE;
      } else
-@@ -2773,10 +2656,8 @@ hg_core_complete(hg_core_handle_t handle)
+@@ -2773,10 +2659,8 @@ hg_core_complete(hg_core_handle_t handle)
  
      ret = hg_core_completion_add(context, hg_completion_entry,
          hg_core_handle->is_self);
@@ -16061,7 +16112,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -2817,15 +2698,17 @@ hg_core_completion_add(struct hg_core_context *context,
+@@ -2817,15 +2701,17 @@ hg_core_completion_add(struct hg_core_context *context,
  
  #ifdef HG_HAS_SELF_FORWARD
      /* TODO could prevent from self notifying if hg_poll_wait() not entered */
@@ -16083,7 +16134,7 @@ index f114699..76c7718 100644
      return ret;
  }
  
-@@ -2843,32 +2726,27 @@ hg_core_context_post(struct hg_core_private_context *context,
+@@ -2843,32 +2729,27 @@ hg_core_context_post(struct hg_core_private_context *context,
          struct hg_core_private_addr *hg_core_addr = NULL;
  
          /* Create a new handle */
@@ -16125,7 +16176,7 @@ index f114699..76c7718 100644
          /* To safely repost handle and prevent externally referenced address */
          hg_core_addr->is_mine = HG_TRUE;
          hg_core_handle->core_handle.info.addr = (hg_core_addr_t) hg_core_addr;
-@@ -2877,13 +2755,13 @@ hg_core_context_post(struct hg_core_private_context *context,
+@@ -2877,13 +2758,13 @@ hg_core_context_post(struct hg_core_private_context *context,
          hg_core_handle->repost = repost;
  
          ret = hg_core_post(hg_core_handle);
@@ -16144,7 +16195,7 @@ index f114699..76c7718 100644
      return ret;
  }
  
-@@ -2901,12 +2779,12 @@ hg_core_post(struct hg_core_private_handle *hg_core_handle)
+@@ -2901,12 +2782,12 @@ hg_core_post(struct hg_core_private_handle *hg_core_handle)
      if (hg_core_handle->na_class ==
          hg_core_handle->core_handle.info.core_class->na_sm_class) {
          hg_thread_spin_lock(
@@ -16159,7 +16210,7 @@ index f114699..76c7718 100644
      } else {
  #endif
          hg_thread_spin_lock(
-@@ -2926,13 +2804,19 @@ hg_core_post(struct hg_core_private_handle *hg_core_handle)
+@@ -2926,13 +2807,19 @@ hg_core_post(struct hg_core_private_handle *hg_core_handle)
          hg_core_handle->core_handle.in_buf,
          hg_core_handle->core_handle.in_buf_size,
          hg_core_handle->in_buf_plugin_data, &hg_core_handle->na_recv_op_id);
@@ -16185,7 +16236,7 @@ index f114699..76c7718 100644
      return ret;
  }
  
-@@ -2954,10 +2838,7 @@ hg_core_reset_post(struct hg_core_private_handle *hg_core_handle)
+@@ -2954,10 +2841,7 @@ hg_core_reset_post(struct hg_core_private_handle *hg_core_handle)
  
      /* Safe to repost */
      ret = hg_core_post(hg_core_handle);
@@ -16197,7 +16248,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -2972,15 +2853,15 @@ hg_core_completion_queue_notify_cb(void *arg,
+@@ -2972,15 +2856,15 @@ hg_core_completion_queue_notify_cb(void *arg,
      struct hg_core_private_context *context =
          (struct hg_core_private_context *) arg;
      hg_util_bool_t notified = HG_UTIL_FALSE;
@@ -16220,7 +16271,7 @@ index f114699..76c7718 100644
      if (notified || !hg_atomic_queue_is_empty(context->completion_queue)
          || hg_atomic_get32(&context->backfill_queue_count)) {
          *progressed = HG_UTIL_TRUE; /* Progressed */
-@@ -2990,7 +2871,7 @@ hg_core_completion_queue_notify_cb(void *arg,
+@@ -2990,7 +2874,7 @@ hg_core_completion_queue_notify_cb(void *arg,
      *progressed = HG_UTIL_FALSE;
  
  done:
@@ -16229,7 +16280,7 @@ index f114699..76c7718 100644
  }
  #endif
  
-@@ -3002,24 +2883,21 @@ hg_core_progress_na_cb(void *arg, int HG_UNUSED error,
+@@ -3002,24 +2886,21 @@ hg_core_progress_na_cb(void *arg, int HG_UNUSED error,
      struct hg_core_private_context *context =
          (struct hg_core_private_context *) arg;
       unsigned int actual_count = 0;
@@ -16260,7 +16311,7 @@ index f114699..76c7718 100644
  
      /* Trigger everything we can from NA, if something completed it will
       * be moved to the HG context completion queue */
-@@ -3033,6 +2911,9 @@ hg_core_progress_na_cb(void *arg, int HG_UNUSED error,
+@@ -3033,6 +2914,9 @@ hg_core_progress_na_cb(void *arg, int HG_UNUSED error,
          for (i = 0; i < actual_count; i++)
              completed_count += (unsigned int) cb_ret[i];
      } while ((na_ret == NA_SUCCESS) && actual_count);
@@ -16270,7 +16321,7 @@ index f114699..76c7718 100644
  
      /* We can't only verify that the completion queue is not empty, we need
       * to check what was added to the completion queue, as the completion queue
-@@ -3047,7 +2928,7 @@ hg_core_progress_na_cb(void *arg, int HG_UNUSED error,
+@@ -3047,7 +2931,7 @@ hg_core_progress_na_cb(void *arg, int HG_UNUSED error,
      *progressed = HG_UTIL_TRUE;
  
  done:
@@ -16279,7 +16330,7 @@ index f114699..76c7718 100644
  }
  
  /*---------------------------------------------------------------------------*/
-@@ -3059,24 +2940,22 @@ hg_core_progress_na_sm_cb(void *arg, int HG_UNUSED error,
+@@ -3059,24 +2943,22 @@ hg_core_progress_na_sm_cb(void *arg, int HG_UNUSED error,
      struct hg_core_private_context *context =
          (struct hg_core_private_context *) arg;
      unsigned int actual_count = 0;
@@ -16311,7 +16362,7 @@ index f114699..76c7718 100644
  
      /* Trigger everything we can from NA, if something completed it will
       * be moved to the HG context completion queue */
-@@ -3090,6 +2969,9 @@ hg_core_progress_na_sm_cb(void *arg, int HG_UNUSED error,
+@@ -3090,6 +2972,9 @@ hg_core_progress_na_sm_cb(void *arg, int HG_UNUSED error,
          for (i = 0; i < actual_count; i++)
              completed_count += (unsigned int)cb_ret[i];
      } while ((na_ret == NA_SUCCESS) && actual_count);
@@ -16321,7 +16372,7 @@ index f114699..76c7718 100644
  
      /* We can't only verify that the completion queue is not empty, we need
       * to check what was added to the completion queue, as the completion queue
-@@ -3104,7 +2986,7 @@ hg_core_progress_na_sm_cb(void *arg, int HG_UNUSED error,
+@@ -3104,7 +2989,7 @@ hg_core_progress_na_sm_cb(void *arg, int HG_UNUSED error,
      *progressed = HG_UTIL_TRUE;
  
  done:
@@ -16330,7 +16381,7 @@ index f114699..76c7718 100644
  }
  #endif
  
-@@ -3113,17 +2995,9 @@ static hg_return_t
+@@ -3113,17 +2998,9 @@ static hg_return_t
  hg_core_progress_na(struct hg_core_private_context *context,
      unsigned int timeout)
  {
@@ -16349,7 +16400,7 @@ index f114699..76c7718 100644
      for (;;) {
          unsigned int actual_count = 0;
          int cb_ret[HG_CORE_MAX_TRIGGER_COUNT] = {0};
-@@ -3144,6 +3018,9 @@ hg_core_progress_na(struct hg_core_private_context *context,
+@@ -3144,6 +3021,9 @@ hg_core_progress_na(struct hg_core_private_context *context,
              for (i = 0; i < actual_count; i++)
                  completed_count += (unsigned int)cb_ret[i];
          } while ((na_ret == NA_SUCCESS) && actual_count);
@@ -16359,7 +16410,7 @@ index f114699..76c7718 100644
  
          /* We can't only verify that the completion queue is not empty, we need
           * to check what was added to the completion queue, as the completion
-@@ -3179,16 +3056,14 @@ hg_core_progress_na(struct hg_core_private_context *context,
+@@ -3179,16 +3059,14 @@ hg_core_progress_na(struct hg_core_private_context *context,
              remaining -= hg_time_to_double(hg_time_subtract(t2, t1));
          }
  
@@ -16382,7 +16433,7 @@ index f114699..76c7718 100644
      }
  
  done:
-@@ -3203,7 +3078,7 @@ hg_core_poll_try_wait_cb(void *arg)
+@@ -3203,7 +3081,7 @@ hg_core_poll_try_wait_cb(void *arg)
          (struct hg_core_private_context *) arg;
  
      /* Do not try to wait if NA_NO_BLOCK is set */
@@ -16391,7 +16442,7 @@ index f114699..76c7718 100644
          return NA_FALSE;
  
      /* Something is in one of the completion queues */
-@@ -3231,31 +3106,24 @@ static hg_return_t
+@@ -3231,31 +3109,24 @@ static hg_return_t
  hg_core_progress_poll(struct hg_core_private_context *context,
      unsigned int timeout)
  {
@@ -16431,7 +16482,7 @@ index f114699..76c7718 100644
  
          /* We progressed, return success */
          if (progressed) {
-@@ -3278,18 +3146,10 @@ static hg_return_t
+@@ -3278,18 +3149,10 @@ static hg_return_t
  hg_core_trigger(struct hg_core_private_context *context, unsigned int timeout,
      unsigned int max_count, unsigned int *actual_count)
  {
@@ -16451,7 +16502,7 @@ index f114699..76c7718 100644
      while (count < max_count) {
          struct hg_completion_entry *hg_completion_entry = NULL;
  
-@@ -3345,50 +3205,42 @@ hg_core_trigger(struct hg_core_private_context *context, unsigned int timeout,
+@@ -3345,50 +3208,42 @@ hg_core_trigger(struct hg_core_private_context *context, unsigned int timeout,
          }
  
          /* Completion queue should not be empty now */
@@ -16516,10 +16567,11 @@ index f114699..76c7718 100644
      return ret;
  }
  
-@@ -3398,6 +3250,15 @@ hg_core_trigger_lookup_entry(struct hg_core_op_id *hg_core_op_id)
+@@ -3398,7 +3253,16 @@ hg_core_trigger_lookup_entry(struct hg_core_op_id *hg_core_op_id)
  {
      hg_return_t ret = HG_SUCCESS;
  
+-    /* Execute callback */
 +    /* Free op */
 +    if (hg_core_op_id->info.lookup.na_lookup_op_id != NA_OP_ID_NULL) {
 +        na_return_t na_ret = NA_Op_destroy(
@@ -16529,10 +16581,11 @@ index f114699..76c7718 100644
 +            "Could not destroy addr op ID (%s)", NA_Error_to_string(na_ret));
 +    }
 +
-     /* Execute callback */
++    /* Execute callback */
      if (hg_core_op_id->callback) {
          struct hg_core_cb_info hg_core_cb_info;
-@@ -3411,7 +3272,7 @@ hg_core_trigger_lookup_entry(struct hg_core_op_id *hg_core_op_id)
+ 
+@@ -3411,7 +3275,7 @@ hg_core_trigger_lookup_entry(struct hg_core_op_id *hg_core_op_id)
          hg_core_op_id->callback(&hg_core_cb_info);
      }
  
@@ -16541,7 +16594,7 @@ index f114699..76c7718 100644
      free(hg_core_op_id);
      return ret;
  }
-@@ -3436,19 +3297,13 @@ hg_core_trigger_entry(struct hg_core_private_handle *hg_core_handle)
+@@ -3436,19 +3300,13 @@ hg_core_trigger_entry(struct hg_core_private_handle *hg_core_handle)
              hg_core_handle->ret = ret;
              ret = HG_Core_respond((hg_core_handle_t) hg_core_handle, NULL, NULL,
                  0, header_size);
@@ -16563,7 +16616,7 @@ index f114699..76c7718 100644
          }
      } else {
          hg_core_cb_t hg_cb = NULL;
-@@ -3491,9 +3346,8 @@ hg_core_trigger_entry(struct hg_core_private_handle *hg_core_handle)
+@@ -3491,9 +3349,8 @@ hg_core_trigger_entry(struct hg_core_private_handle *hg_core_handle)
                  break;
              case HG_CORE_PROCESS:
              default:
@@ -16575,7 +16628,7 @@ index f114699..76c7718 100644
          }
  
          /* Execute user callback */
-@@ -3506,10 +3360,7 @@ hg_core_trigger_entry(struct hg_core_private_handle *hg_core_handle)
+@@ -3506,10 +3363,7 @@ hg_core_trigger_entry(struct hg_core_private_handle *hg_core_handle)
          && !HG_CORE_HANDLE_CONTEXT(hg_core_handle)->finalizing) {
          /* Repost handle */
          ret = hg_core_reset_post(hg_core_handle);
@@ -16587,7 +16640,7 @@ index f114699..76c7718 100644
      } else
          hg_core_destroy(hg_core_handle);
  
-@@ -3523,54 +3374,30 @@ hg_core_cancel(struct hg_core_private_handle *hg_core_handle)
+@@ -3523,54 +3377,30 @@ hg_core_cancel(struct hg_core_private_handle *hg_core_handle)
  {
      hg_return_t ret = HG_SUCCESS;
  
@@ -16656,7 +16709,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -3589,19 +3416,12 @@ HG_Core_init_opt(const char *na_info_string, hg_bool_t na_listen,
+@@ -3589,19 +3419,12 @@ HG_Core_init_opt(const char *na_info_string, hg_bool_t na_listen,
      const struct hg_init_info *hg_init_info)
  {
      struct hg_core_private_class *hg_core_class = NULL;
@@ -16678,7 +16731,7 @@ index f114699..76c7718 100644
      return (hg_core_class_t *) hg_core_class;
  }
  
-@@ -3609,13 +3429,10 @@ done:
+@@ -3609,13 +3432,10 @@ done:
  hg_return_t
  HG_Core_finalize(hg_core_class_t *hg_core_class)
  {
@@ -16694,7 +16747,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -3639,11 +3456,8 @@ HG_Core_set_more_data_callback(struct hg_core_class *hg_core_class,
+@@ -3639,11 +3459,8 @@ HG_Core_set_more_data_callback(struct hg_core_class *hg_core_class,
          (struct hg_core_private_class *) hg_core_class;
      hg_return_t ret = HG_SUCCESS;
  
@@ -16708,7 +16761,7 @@ index f114699..76c7718 100644
  
      private_class->more_data_acquire = more_data_acquire_callback;
      private_class->more_data_release = more_data_release_callback;
-@@ -3663,35 +3477,26 @@ HG_Core_context_create(hg_core_class_t *hg_core_class)
+@@ -3663,35 +3480,26 @@ HG_Core_context_create(hg_core_class_t *hg_core_class)
  hg_core_context_t *
  HG_Core_context_create_id(hg_core_class_t *hg_core_class, hg_uint8_t id)
  {
@@ -16751,7 +16804,7 @@ index f114699..76c7718 100644
      HG_QUEUE_INIT(&context->backfill_queue);
      hg_atomic_init32(&context->backfill_queue_count, 0);
      HG_LIST_INIT(&context->pending_list);
-@@ -3709,46 +3514,31 @@ HG_Core_context_create_id(hg_core_class_t *hg_core_class, hg_uint8_t id)
+@@ -3709,46 +3517,31 @@ HG_Core_context_create_id(hg_core_class_t *hg_core_class, hg_uint8_t id)
      hg_atomic_init32(&context->trigger_waiting, 0);
  
      hg_thread_spin_init(&context->pending_list_lock);
@@ -16806,7 +16859,7 @@ index f114699..76c7718 100644
      context->completion_queue_notify = fd;
  
      /* Add event to context poll set */
-@@ -3756,7 +3546,7 @@ HG_Core_context_create_id(hg_core_class_t *hg_core_class, hg_uint8_t id)
+@@ -3756,7 +3549,7 @@ HG_Core_context_create_id(hg_core_class_t *hg_core_class, hg_uint8_t id)
          hg_core_completion_queue_notify_cb, context);
  #endif
  
@@ -16815,7 +16868,7 @@ index f114699..76c7718 100644
          /* Force to use progress poll */
          na_poll_fd = 0;
      else
-@@ -3776,22 +3566,17 @@ HG_Core_context_create_id(hg_core_class_t *hg_core_class, hg_uint8_t id)
+@@ -3776,22 +3569,17 @@ HG_Core_context_create_id(hg_core_class_t *hg_core_class, hg_uint8_t id)
  #ifdef HG_HAS_SM_ROUTING
      /* Auto SM requires hg_core_progress_poll */
      if (context->core_context.na_sm_context) {
@@ -16844,7 +16897,7 @@ index f114699..76c7718 100644
          }
          hg_poll_add(context->poll_set, na_poll_fd, HG_POLLIN,
              hg_core_progress_na_sm_cb, context);
-@@ -3804,12 +3589,11 @@ HG_Core_context_create_id(hg_core_class_t *hg_core_class, hg_uint8_t id)
+@@ -3804,12 +3592,11 @@ HG_Core_context_create_id(hg_core_class_t *hg_core_class, hg_uint8_t id)
      /* Increment context count of parent class */
      hg_atomic_incr32(&HG_CORE_CONTEXT_CLASS(context)->n_contexts);
  
@@ -16861,7 +16914,7 @@ index f114699..76c7718 100644
  }
  
  /*---------------------------------------------------------------------------*/
-@@ -3818,41 +3602,32 @@ HG_Core_context_destroy(hg_core_context_t *context)
+@@ -3818,41 +3605,32 @@ HG_Core_context_destroy(hg_core_context_t *context)
  {
      struct hg_core_private_context *private_context =
          (struct hg_core_private_context *) context;
@@ -16914,7 +16967,7 @@ index f114699..76c7718 100644
  
  #ifdef HG_HAS_SM_ROUTING
      if (context->na_sm_context) {
-@@ -3860,15 +3635,15 @@ HG_Core_context_destroy(hg_core_context_t *context)
+@@ -3860,15 +3638,15 @@ HG_Core_context_destroy(hg_core_context_t *context)
              na_ret = NA_Trigger(context->na_sm_context, 0, 1, NULL,
                  &actual_count);
          } while ((na_ret == NA_SUCCESS) && actual_count);
@@ -16935,7 +16988,7 @@ index f114699..76c7718 100644
  
      /* Number of handles for that context should be 0 */
      n_handles = hg_atomic_get32(&private_context->n_handles);
-@@ -3882,101 +3657,85 @@ HG_Core_context_destroy(hg_core_context_t *context)
+@@ -3882,101 +3660,85 @@ HG_Core_context_destroy(hg_core_context_t *context)
                  hg_core_handle);
          }
          hg_thread_spin_unlock(&private_context->created_list_lock);
@@ -17074,7 +17127,7 @@ index f114699..76c7718 100644
      }
  #endif
  
-@@ -3988,9 +3747,6 @@ HG_Core_context_destroy(hg_core_context_t *context)
+@@ -3988,9 +3750,6 @@ HG_Core_context_destroy(hg_core_context_t *context)
      hg_thread_mutex_destroy(&private_context->completion_queue_mutex);
      hg_thread_cond_destroy(&private_context->completion_queue_cond);
      hg_thread_spin_destroy(&private_context->pending_list_lock);
@@ -17084,7 +17137,7 @@ index f114699..76c7718 100644
      hg_thread_spin_destroy(&private_context->created_list_lock);
  
      /* Decrement context count of parent class */
-@@ -4011,11 +3767,8 @@ HG_Core_context_set_handle_create_callback(hg_core_context_t *context,
+@@ -4011,11 +3770,8 @@ HG_Core_context_set_handle_create_callback(hg_core_context_t *context,
          (struct hg_core_private_context *) context;
      hg_return_t ret = HG_SUCCESS;
  
@@ -17098,7 +17151,7 @@ index f114699..76c7718 100644
  
      private_context->handle_create = callback;
      private_context->handle_create_arg = arg;
-@@ -4032,26 +3785,18 @@ HG_Core_context_post(hg_core_context_t *context, unsigned int request_count,
+@@ -4032,26 +3788,18 @@ HG_Core_context_post(hg_core_context_t *context, unsigned int request_count,
      hg_bool_t use_sm = HG_FALSE;
      hg_return_t ret = HG_SUCCESS;
  
@@ -17131,7 +17184,7 @@ index f114699..76c7718 100644
  #ifdef HG_HAS_SM_ROUTING
          if (context->na_sm_context)
              use_sm = !use_sm;
-@@ -4074,11 +3819,8 @@ HG_Core_register(hg_core_class_t *hg_core_class, hg_id_t id,
+@@ -4074,11 +3822,8 @@ HG_Core_register(hg_core_class_t *hg_core_class, hg_id_t id,
      hg_return_t ret = HG_SUCCESS;
      int hash_ret;
  
@@ -17145,7 +17198,7 @@ index f114699..76c7718 100644
  
      /* Check if registered and set RPC CB */
      hg_thread_spin_lock(&private_class->func_map_lock);
-@@ -4091,21 +3833,15 @@ HG_Core_register(hg_core_class_t *hg_core_class, hg_id_t id,
+@@ -4091,21 +3836,15 @@ HG_Core_register(hg_core_class_t *hg_core_class, hg_id_t id,
      if (!hg_core_rpc_info) {
          /* Allocate the key */
          func_key = (hg_id_t *) malloc(sizeof(hg_id_t));
@@ -17171,7 +17224,7 @@ index f114699..76c7718 100644
  
          hg_core_rpc_info->rpc_cb = rpc_cb;
          hg_core_rpc_info->data = NULL;
-@@ -4115,18 +3851,16 @@ HG_Core_register(hg_core_class_t *hg_core_class, hg_id_t id,
+@@ -4115,18 +3854,16 @@ HG_Core_register(hg_core_class_t *hg_core_class, hg_id_t id,
          hash_ret = hg_hash_table_insert(private_class->func_map,
              (hg_hash_table_key_t) func_key, hg_core_rpc_info);
          hg_thread_spin_unlock(&private_class->func_map_lock);
@@ -17198,7 +17251,7 @@ index f114699..76c7718 100644
      return ret;
  }
  
-@@ -4139,21 +3873,15 @@ HG_Core_deregister(hg_core_class_t *hg_core_class, hg_id_t id)
+@@ -4139,21 +3876,15 @@ HG_Core_deregister(hg_core_class_t *hg_core_class, hg_id_t id)
      hg_return_t ret = HG_SUCCESS;
      int hash_ret;
  
@@ -17224,7 +17277,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -4167,16 +3895,10 @@ HG_Core_registered(hg_core_class_t *hg_core_class, hg_id_t id, hg_bool_t *flag)
+@@ -4167,16 +3898,10 @@ HG_Core_registered(hg_core_class_t *hg_core_class, hg_id_t id, hg_bool_t *flag)
          (struct hg_core_private_class *) hg_core_class;
      hg_return_t ret = HG_SUCCESS;
  
@@ -17245,7 +17298,7 @@ index f114699..76c7718 100644
  
      hg_thread_spin_lock(&private_class->func_map_lock);
      *flag = (hg_bool_t) (hg_hash_table_lookup(private_class->func_map,
-@@ -4197,24 +3919,18 @@ HG_Core_register_data(hg_core_class_t *hg_core_class, hg_id_t id, void *data,
+@@ -4197,24 +3922,18 @@ HG_Core_register_data(hg_core_class_t *hg_core_class, hg_id_t id, void *data,
      struct hg_core_rpc_info *hg_core_rpc_info = NULL;
      hg_return_t ret = HG_SUCCESS;
  
@@ -17276,7 +17329,7 @@ index f114699..76c7718 100644
      hg_core_rpc_info->data = data;
      hg_core_rpc_info->free_callback = free_callback;
  
-@@ -4231,19 +3947,14 @@ HG_Core_registered_data(hg_core_class_t *hg_core_class, hg_id_t id)
+@@ -4231,19 +3950,14 @@ HG_Core_registered_data(hg_core_class_t *hg_core_class, hg_id_t id)
      struct hg_core_rpc_info *hg_core_rpc_info = NULL;
      void *data = NULL;
  
@@ -17299,7 +17352,7 @@ index f114699..76c7718 100644
  
      data = hg_core_rpc_info->data;
  
-@@ -4258,28 +3969,16 @@ HG_Core_addr_lookup(hg_core_context_t *context, hg_core_cb_t callback,
+@@ -4258,28 +3972,16 @@ HG_Core_addr_lookup(hg_core_context_t *context, hg_core_cb_t callback,
  {
      hg_return_t ret = HG_SUCCESS;
  
@@ -17335,7 +17388,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -4291,25 +3990,16 @@ HG_Core_addr_create(hg_core_class_t *hg_core_class, hg_core_addr_t *addr)
+@@ -4291,25 +3993,16 @@ HG_Core_addr_create(hg_core_class_t *hg_core_class, hg_core_addr_t *addr)
  {
      hg_return_t ret = HG_SUCCESS;
  
@@ -17367,7 +17420,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -4321,18 +4011,33 @@ HG_Core_addr_free(hg_core_class_t *hg_core_class, hg_core_addr_t addr)
+@@ -4321,18 +4014,33 @@ HG_Core_addr_free(hg_core_class_t *hg_core_class, hg_core_addr_t addr)
  {
      hg_return_t ret = HG_SUCCESS;
  
@@ -17410,7 +17463,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -4344,23 +4049,14 @@ HG_Core_addr_self(hg_core_class_t *hg_core_class, hg_core_addr_t *addr)
+@@ -4344,23 +4052,14 @@ HG_Core_addr_self(hg_core_class_t *hg_core_class, hg_core_addr_t *addr)
  {
      hg_return_t ret = HG_SUCCESS;
  
@@ -17439,7 +17492,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -4373,29 +4069,41 @@ HG_Core_addr_dup(hg_core_class_t *hg_core_class, hg_core_addr_t addr,
+@@ -4373,29 +4072,41 @@ HG_Core_addr_dup(hg_core_class_t *hg_core_class, hg_core_addr_t addr,
  {
      hg_return_t ret = HG_SUCCESS;
  
@@ -17500,7 +17553,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -4408,18 +4116,14 @@ HG_Core_addr_to_string(hg_core_class_t *hg_core_class, char *buf,
+@@ -4408,18 +4119,14 @@ HG_Core_addr_to_string(hg_core_class_t *hg_core_class, char *buf,
  {
      hg_return_t ret = HG_SUCCESS;
  
@@ -17524,7 +17577,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -4438,16 +4142,10 @@ HG_Core_create(hg_core_context_t *context, hg_core_addr_t addr, hg_id_t id,
+@@ -4438,16 +4145,10 @@ HG_Core_create(hg_core_context_t *context, hg_core_addr_t addr, hg_id_t id,
      hg_bool_t use_sm = HG_FALSE;
      hg_return_t ret = HG_SUCCESS;
  
@@ -17545,7 +17598,7 @@ index f114699..76c7718 100644
  
  #ifdef HG_HAS_SM_ROUTING
      if (private_addr
-@@ -4457,37 +4155,30 @@ HG_Core_create(hg_core_context_t *context, hg_core_addr_t addr, hg_id_t id,
+@@ -4457,37 +4158,30 @@ HG_Core_create(hg_core_context_t *context, hg_core_addr_t addr, hg_id_t id,
  
      /* Create new handle */
      hg_core_handle = hg_core_create(private_context, use_sm);
@@ -17594,7 +17647,7 @@ index f114699..76c7718 100644
      return ret;
  }
  
-@@ -4499,21 +4190,15 @@ HG_Core_destroy(hg_core_handle_t handle)
+@@ -4499,21 +4193,15 @@ HG_Core_destroy(hg_core_handle_t handle)
          (struct hg_core_private_handle *) handle;
      hg_return_t ret = HG_SUCCESS;
  
@@ -17618,7 +17671,7 @@ index f114699..76c7718 100644
      } else
          hg_core_destroy(hg_core_handle);
  
-@@ -4531,36 +4216,26 @@ HG_Core_reset(hg_core_handle_t handle, hg_core_addr_t addr, hg_id_t id)
+@@ -4531,36 +4219,26 @@ HG_Core_reset(hg_core_handle_t handle, hg_core_addr_t addr, hg_id_t id)
          (struct hg_core_private_addr *) addr;
      hg_return_t ret = HG_SUCCESS;
  
@@ -17664,7 +17717,7 @@ index f114699..76c7718 100644
      }
  #endif
  
-@@ -4569,9 +4244,9 @@ HG_Core_reset(hg_core_handle_t handle, hg_core_addr_t addr, hg_id_t id)
+@@ -4569,9 +4247,9 @@ HG_Core_reset(hg_core_handle_t handle, hg_core_addr_t addr, hg_id_t id)
  
      /* Set addr / RPC ID */
      ret = hg_core_set_rpc(hg_core_handle, hg_core_addr, id);
@@ -17676,7 +17729,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -4583,15 +4258,14 @@ HG_Core_ref_incr(hg_core_handle_t handle)
+@@ -4583,15 +4261,14 @@ HG_Core_ref_incr(hg_core_handle_t handle)
  {
      struct hg_core_private_handle *hg_core_handle =
          (struct hg_core_private_handle *) handle;
@@ -17698,7 +17751,7 @@ index f114699..76c7718 100644
  }
  
  /*---------------------------------------------------------------------------*/
-@@ -4600,13 +4274,14 @@ HG_Core_ref_get(hg_core_handle_t handle)
+@@ -4600,13 +4277,14 @@ HG_Core_ref_get(hg_core_handle_t handle)
  {
      struct hg_core_private_handle *hg_core_handle =
          (struct hg_core_private_handle *) handle;
@@ -17720,7 +17773,7 @@ index f114699..76c7718 100644
  }
  
  /*---------------------------------------------------------------------------*/
-@@ -4617,39 +4292,40 @@ HG_Core_forward(hg_core_handle_t handle, hg_core_cb_t callback, void *arg,
+@@ -4617,39 +4295,40 @@ HG_Core_forward(hg_core_handle_t handle, hg_core_cb_t callback, void *arg,
      struct hg_core_private_handle *hg_core_handle =
          (struct hg_core_private_handle *) handle;
      hg_size_t header_size;
@@ -17790,10 +17843,13 @@ index f114699..76c7718 100644
      }
  
  #ifdef HG_HAS_COLLECT_STATS
-@@ -4661,19 +4337,20 @@ HG_Core_forward(hg_core_handle_t handle, hg_core_cb_t callback, void *arg,
+@@ -4661,19 +4340,23 @@ HG_Core_forward(hg_core_handle_t handle, hg_core_cb_t callback, void *arg,
      hg_core_handle->na_op_count = 1; /* Default (no response) */
      hg_atomic_set32(&hg_core_handle->na_op_completed_count, 0);
  
++    /* Reset handle ret */
++    hg_core_handle->ret = HG_SUCCESS;
++
 +    /* Increase ref count here so that a call to HG_Destroy does not free the
 +     * handle but only schedules its completion
 +     */
@@ -17818,7 +17874,7 @@ index f114699..76c7718 100644
  
      /* Parse flags */
      if (flags & HG_CORE_NO_RESPONSE)
-@@ -4699,32 +4376,26 @@ HG_Core_forward(hg_core_handle_t handle, hg_core_cb_t callback, void *arg,
+@@ -4699,32 +4382,26 @@ HG_Core_forward(hg_core_handle_t handle, hg_core_cb_t callback, void *arg,
      /* Encode request header */
      ret = hg_core_proc_header_request(&hg_core_handle->core_handle,
          &hg_core_handle->in_header, HG_ENCODE);
@@ -17865,7 +17921,7 @@ index f114699..76c7718 100644
  }
  
  /*---------------------------------------------------------------------------*/
-@@ -4737,25 +4408,12 @@ HG_Core_respond(hg_core_handle_t handle, hg_core_cb_t callback, void *arg,
+@@ -4737,25 +4414,12 @@ HG_Core_respond(hg_core_handle_t handle, hg_core_cb_t callback, void *arg,
      hg_size_t header_size;
      hg_return_t ret = HG_SUCCESS;
  
@@ -17896,7 +17952,7 @@ index f114699..76c7718 100644
  
      /* Set header size */
      header_size = hg_core_header_response_get_size() +
-@@ -4763,12 +4421,9 @@ HG_Core_respond(hg_core_handle_t handle, hg_core_cb_t callback, void *arg,
+@@ -4763,12 +4427,9 @@ HG_Core_respond(hg_core_handle_t handle, hg_core_cb_t callback, void *arg,
  
      /* Set the actual size of the msg that needs to be transmitted */
      hg_core_handle->out_buf_used = header_size + payload_size;
@@ -17912,7 +17968,7 @@ index f114699..76c7718 100644
  
      /* Set callback, keep request and response callbacks separate so that
       * they do not get overwritten when forwarding to ourself */
-@@ -4783,18 +4438,12 @@ HG_Core_respond(hg_core_handle_t handle, hg_core_cb_t callback, void *arg,
+@@ -4783,18 +4444,12 @@ HG_Core_respond(hg_core_handle_t handle, hg_core_cb_t callback, void *arg,
      /* Encode response header */
      ret = hg_core_proc_header_response(&hg_core_handle->core_handle,
          &hg_core_handle->out_header, HG_ENCODE);
@@ -17933,7 +17989,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -4808,18 +4457,13 @@ HG_Core_progress(hg_core_context_t *context, unsigned int timeout)
+@@ -4808,18 +4463,13 @@ HG_Core_progress(hg_core_context_t *context, unsigned int timeout)
          (struct hg_core_private_context *) context;
      hg_return_t ret = HG_SUCCESS;
  
@@ -17956,7 +18012,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -4832,18 +4476,13 @@ HG_Core_trigger(hg_core_context_t *context, unsigned int timeout,
+@@ -4832,18 +4482,13 @@ HG_Core_trigger(hg_core_context_t *context, unsigned int timeout,
  {
      hg_return_t ret = HG_SUCCESS;
  
@@ -17979,7 +18035,7 @@ index f114699..76c7718 100644
  
  done:
      return ret;
-@@ -4855,17 +4494,11 @@ HG_Core_cancel(hg_core_handle_t handle)
+@@ -4855,17 +4500,11 @@ HG_Core_cancel(hg_core_handle_t handle)
  {
      hg_return_t ret = HG_SUCCESS;
  
@@ -24384,7 +24440,7 @@ index 7014760..cc9ae46 100644
          na_class_t *na_class
          );
 diff --git a/src/na/na_ofi.c b/src/na/na_ofi.c
-index aca1919..212f5f7 100644
+index aca1919..66c4645 100644
 --- a/src/na/na_ofi.c
 +++ b/src/na/na_ofi.c
 @@ -74,8 +74,6 @@
@@ -27324,7 +27380,7 @@ index aca1919..212f5f7 100644
  
  out:
      return ret;
-@@ -2985,64 +2756,185 @@ out:
+@@ -2985,64 +2756,184 @@ out:
  
  /*---------------------------------------------------------------------------*/
  static na_return_t
@@ -27461,13 +27517,12 @@ index aca1919..212f5f7 100644
 +        /* If it was canceled while being processed, set callback ret accordingly */
 +        NA_LOG_DEBUG("Operation ID %p is canceled", na_ofi_op_id);
 +        callback_info->ret = NA_CANCELED;
-+    }
-+
-+    if (status & NA_OFI_OP_ERRORED) {
++    } else if (status & NA_OFI_OP_ERRORED) {
 +        /* If it was errored, set callback ret accordingly */
 +        NA_LOG_DEBUG("Operation ID %p is errored", na_ofi_op_id);
 +        callback_info->ret = NA_PROTOCOL_ERROR;
-+    }
++    } else
++        callback_info->ret = NA_SUCCESS;
  
      switch (callback_info->type) {
 -    case NA_CB_LOOKUP:
@@ -27555,7 +27610,7 @@ index aca1919..212f5f7 100644
      return ret;
  }
  
-@@ -3052,9 +2944,14 @@ na_ofi_release(void *arg)
+@@ -3052,9 +2943,14 @@ na_ofi_release(void *arg)
  {
      struct na_ofi_op_id *na_ofi_op_id = (struct na_ofi_op_id *) arg;
  
@@ -27572,7 +27627,7 @@ index aca1919..212f5f7 100644
      na_ofi_op_id_decref(na_ofi_op_id);
  }
  
-@@ -3071,25 +2968,20 @@ na_ofi_check_protocol(const char *protocol_name)
+@@ -3071,25 +2967,20 @@ na_ofi_check_protocol(const char *protocol_name)
      enum na_ofi_prov_type type;
  
      type = na_ofi_prov_name_to_type(protocol_name);
@@ -27605,7 +27660,7 @@ index aca1919..212f5f7 100644
          if (!strcmp(na_ofi_prov_name[type], prov->fabric_attr->prov_name)) {
              accept = NA_TRUE;
              break;
-@@ -3097,82 +2989,75 @@ na_ofi_check_protocol(const char *protocol_name)
+@@ -3097,82 +2988,75 @@ na_ofi_check_protocol(const char *protocol_name)
          prov = prov->next;
      }
  
@@ -27719,7 +27774,7 @@ index aca1919..212f5f7 100644
  
      /* Get hostname/port info if available */
      if (resolve_name) {
-@@ -3183,43 +3068,40 @@ na_ofi_initialize(na_class_t *na_class, const struct na_info *na_info,
+@@ -3183,43 +3067,40 @@ na_ofi_initialize(na_class_t *na_class, const struct na_info *na_info,
              /* Try to get matching IP/device */
              ret = na_ofi_check_interface(resolve_name, port, &ifa_name,
                  &na_ofi_sin_addr);
@@ -27780,7 +27835,7 @@ index aca1919..212f5f7 100644
          } else if (na_ofi_prov_addr_format[prov_type] == FI_ADDR_PSMX2) {
              /* Nothing to do */
          }
-@@ -3228,8 +3110,10 @@ na_ofi_initialize(na_class_t *na_class, const struct na_info *na_info,
+@@ -3228,8 +3109,10 @@ na_ofi_initialize(na_class_t *na_class, const struct na_info *na_info,
      /* Get init info */
      if (na_info->na_init_info) {
          /* Progress mode */
@@ -27792,7 +27847,7 @@ index aca1919..212f5f7 100644
          /* Max contexts */
          max_contexts = na_info->na_init_info->max_contexts;
          /* Auth key */
-@@ -3239,48 +3123,37 @@ na_ofi_initialize(na_class_t *na_class, const struct na_info *na_info,
+@@ -3239,48 +3122,37 @@ na_ofi_initialize(na_class_t *na_class, const struct na_info *na_info,
      /* Create private data */
      na_class->plugin_class = (struct na_ofi_class *) malloc(
          sizeof(struct na_ofi_class));
@@ -27859,7 +27914,7 @@ index aca1919..212f5f7 100644
  
  out:
      if (ret != NA_SUCCESS) {
-@@ -3290,7 +3163,7 @@ out:
+@@ -3290,7 +3162,7 @@ out:
          }
      }
      free(src_addr);
@@ -27868,7 +27923,7 @@ index aca1919..212f5f7 100644
      return ret;
  }
  
-@@ -3305,38 +3178,32 @@ na_ofi_finalize(na_class_t *na_class)
+@@ -3305,38 +3177,32 @@ na_ofi_finalize(na_class_t *na_class)
          goto out;
  
      /* Close endpoint */
@@ -27920,7 +27975,7 @@ index aca1919..212f5f7 100644
      free(priv);
      na_class->plugin_class = NULL;
  
-@@ -3349,152 +3216,104 @@ static na_return_t
+@@ -3349,152 +3215,104 @@ static na_return_t
  na_ofi_context_create(na_class_t *na_class, void **context, na_uint8_t id)
  {
      struct na_ofi_class *priv = NA_OFI_CLASS(na_class);
@@ -28133,7 +28188,7 @@ index aca1919..212f5f7 100644
      return ret;
  }
  
-@@ -3507,70 +3326,54 @@ na_ofi_context_destroy(na_class_t *na_class, void *context)
+@@ -3507,70 +3325,54 @@ na_ofi_context_destroy(na_class_t *na_class, void *context)
      na_return_t ret = NA_SUCCESS;
      int rc;
  
@@ -28237,7 +28292,7 @@ index aca1919..212f5f7 100644
  out:
      return ret;
  }
-@@ -3582,21 +3385,15 @@ na_ofi_op_create(na_class_t NA_UNUSED *na_class)
+@@ -3582,21 +3384,15 @@ na_ofi_op_create(na_class_t NA_UNUSED *na_class)
      struct na_ofi_op_id *na_ofi_op_id = NULL;
  
      na_ofi_op_id = (struct na_ofi_op_id *)calloc(1, sizeof(struct na_ofi_op_id));
@@ -28265,7 +28320,7 @@ index aca1919..212f5f7 100644
  
  out:
      return (na_op_id_t) na_ofi_op_id;
-@@ -3615,110 +3412,75 @@ na_ofi_op_destroy(na_class_t NA_UNUSED *na_class, na_op_id_t op_id)
+@@ -3615,110 +3411,75 @@ na_ofi_op_destroy(na_class_t NA_UNUSED *na_class, na_op_id_t op_id)
  
  /*---------------------------------------------------------------------------*/
  static na_return_t
@@ -28420,7 +28475,7 @@ index aca1919..212f5f7 100644
  
      return NA_SUCCESS;
  }
-@@ -3737,19 +3499,56 @@ na_ofi_addr_dup(na_class_t NA_UNUSED *na_class, na_addr_t addr,
+@@ -3737,19 +3498,56 @@ na_ofi_addr_dup(na_class_t NA_UNUSED *na_class, na_addr_t addr,
  }
  
  /*---------------------------------------------------------------------------*/
@@ -28483,7 +28538,7 @@ index aca1919..212f5f7 100644
  }
  
  /*---------------------------------------------------------------------------*/
-@@ -3761,20 +3560,27 @@ na_ofi_addr_to_string(na_class_t NA_UNUSED *na_class, char *buf,
+@@ -3761,20 +3559,27 @@ na_ofi_addr_to_string(na_class_t NA_UNUSED *na_class, char *buf,
      na_size_t str_len;
      na_return_t ret = NA_SUCCESS;
  
@@ -28521,7 +28576,7 @@ index aca1919..212f5f7 100644
      }
      *buf_size = str_len + 1;
  
-@@ -3788,8 +3594,25 @@ na_ofi_addr_get_serialize_size(na_class_t NA_UNUSED *na_class,
+@@ -3788,8 +3593,25 @@ na_ofi_addr_get_serialize_size(na_class_t NA_UNUSED *na_class,
      na_addr_t addr)
  {
      struct na_ofi_addr *na_ofi_addr = (struct na_ofi_addr *) addr;
@@ -28548,7 +28603,7 @@ index aca1919..212f5f7 100644
  }
  
  /*---------------------------------------------------------------------------*/
-@@ -3798,20 +3621,28 @@ na_ofi_addr_serialize(na_class_t NA_UNUSED *na_class, void *buf,
+@@ -3798,20 +3620,28 @@ na_ofi_addr_serialize(na_class_t NA_UNUSED *na_class, void *buf,
      na_size_t buf_size, na_addr_t addr)
  {
      struct na_ofi_addr *na_ofi_addr = (struct na_ofi_addr *) addr;
@@ -28585,7 +28640,7 @@ index aca1919..212f5f7 100644
  
  out:
      return ret;
-@@ -3822,46 +3653,39 @@ static na_return_t
+@@ -3822,46 +3652,39 @@ static na_return_t
  na_ofi_addr_deserialize(na_class_t *na_class, na_addr_t *addr, const void *buf,
      na_size_t NA_UNUSED buf_size)
  {
@@ -28652,7 +28707,7 @@ index aca1919..212f5f7 100644
      return ret;
  }
  
-@@ -3871,25 +3695,22 @@ na_ofi_msg_get_max_unexpected_size(const na_class_t NA_UNUSED *na_class)
+@@ -3871,25 +3694,22 @@ na_ofi_msg_get_max_unexpected_size(const na_class_t NA_UNUSED *na_class)
  {
      na_size_t max_unexpected_size = NA_OFI_UNEXPECTED_SIZE;
  #ifdef NA_OFI_HAS_EXT_GNI_H
@@ -28687,7 +28742,7 @@ index aca1919..212f5f7 100644
      }
  
  out:
-@@ -3930,16 +3751,12 @@ na_ofi_msg_buf_alloc(na_class_t *na_class, na_size_t size, void **plugin_data)
+@@ -3930,16 +3750,12 @@ na_ofi_msg_buf_alloc(na_class_t *na_class, na_size_t size, void **plugin_data)
  
  #ifdef NA_OFI_HAS_MEM_POOL
      mem_ptr = na_ofi_mem_pool_alloc(na_class, size, &mr_hdl);
@@ -28708,7 +28763,7 @@ index aca1919..212f5f7 100644
  #endif
      *plugin_data = mr_hdl;
  
-@@ -3967,6 +3784,8 @@ na_ofi_msg_buf_free(na_class_t *na_class, void *buf, void *plugin_data)
+@@ -3967,6 +3783,8 @@ na_ofi_msg_buf_free(na_class_t *na_class, void *buf, void *plugin_data)
  static na_return_t
  na_ofi_msg_init_unexpected(na_class_t *na_class, void *buf, na_size_t buf_size)
  {
@@ -28717,7 +28772,7 @@ index aca1919..212f5f7 100644
      /*
       * For those providers that don't support FI_SOURCE/FI_SOURCE_ERR, insert
       * the msg header to piggyback the source address for unexpected message.
-@@ -3974,13 +3793,15 @@ na_ofi_msg_init_unexpected(na_class_t *na_class, void *buf, na_size_t buf_size)
+@@ -3974,13 +3792,15 @@ na_ofi_msg_init_unexpected(na_class_t *na_class, void *buf, na_size_t buf_size)
      if (na_ofi_with_msg_hdr(na_class)) {
          struct na_ofi_class *priv = NA_OFI_CLASS(na_class);
          struct na_ofi_sin_addr *na_ofi_sin_addr =
@@ -28736,7 +28791,7 @@ index aca1919..212f5f7 100644
  }
  
  /*---------------------------------------------------------------------------*/
-@@ -3991,64 +3812,74 @@ na_ofi_msg_send_unexpected(na_class_t *na_class, na_context_t *context,
+@@ -3991,64 +3811,74 @@ na_ofi_msg_send_unexpected(na_class_t *na_class, na_context_t *context,
      na_op_id_t *op_id)
  {
      struct na_ofi_context *ctx = NA_OFI_CONTEXT(context);
@@ -28859,7 +28914,7 @@ index aca1919..212f5f7 100644
      return ret;
  }
  
-@@ -4059,62 +3890,68 @@ na_ofi_msg_recv_unexpected(na_class_t *na_class, na_context_t *context,
+@@ -4059,62 +3889,68 @@ na_ofi_msg_recv_unexpected(na_class_t *na_class, na_context_t *context,
      void *plugin_data, na_op_id_t *op_id)
  {
      struct na_ofi_context *ctx = NA_OFI_CONTEXT(context);
@@ -28975,7 +29030,7 @@ index aca1919..212f5f7 100644
      return ret;
  }
  
-@@ -4126,64 +3963,73 @@ na_ofi_msg_send_expected(na_class_t *na_class, na_context_t *context,
+@@ -4126,64 +3962,73 @@ na_ofi_msg_send_expected(na_class_t *na_class, na_context_t *context,
      na_op_id_t *op_id)
  {
      struct na_ofi_context *ctx = NA_OFI_CONTEXT(context);
@@ -29097,7 +29152,7 @@ index aca1919..212f5f7 100644
      return ret;
  }
  
-@@ -4195,68 +4041,72 @@ na_ofi_msg_recv_expected(na_class_t *na_class, na_context_t *context,
+@@ -4195,68 +4040,72 @@ na_ofi_msg_recv_expected(na_class_t *na_class, na_context_t *context,
      na_tag_t tag, na_op_id_t *op_id)
  {
      struct na_ofi_context *ctx = NA_OFI_CONTEXT(context);
@@ -29222,7 +29277,7 @@ index aca1919..212f5f7 100644
      return ret;
  }
  
-@@ -4271,11 +4121,8 @@ na_ofi_mem_handle_create(na_class_t NA_UNUSED *na_class, void *buf,
+@@ -4271,11 +4120,8 @@ na_ofi_mem_handle_create(na_class_t NA_UNUSED *na_class, void *buf,
      /* Allocate memory handle */
      na_ofi_mem_handle = (struct na_ofi_mem_handle *) calloc(1,
          sizeof(struct na_ofi_mem_handle));
@@ -29236,7 +29291,7 @@ index aca1919..212f5f7 100644
  
      na_ofi_mem_handle->desc.base = (na_ptr_t)buf;
      na_ofi_mem_handle->desc.size = buf_size;
-@@ -4302,7 +4149,7 @@ static na_return_t
+@@ -4302,7 +4148,7 @@ static na_return_t
  na_ofi_mem_register(na_class_t *na_class, na_mem_handle_t mem_handle)
  {
      struct na_ofi_mem_handle *na_ofi_mem_handle = mem_handle;
@@ -29245,7 +29300,7 @@ index aca1919..212f5f7 100644
      const void *base;
      na_uint64_t access;
      int rc = 0;
-@@ -4310,11 +4157,11 @@ na_ofi_mem_register(na_class_t *na_class, na_mem_handle_t mem_handle)
+@@ -4310,11 +4156,11 @@ na_ofi_mem_register(na_class_t *na_class, na_mem_handle_t mem_handle)
  
      /* Nothing to do for providers that do not need physically backed
       * virtual addresses (FI_MR_SCALABLE) */
@@ -29261,7 +29316,7 @@ index aca1919..212f5f7 100644
      }
  
      /* Set access mode */
-@@ -4329,26 +4176,23 @@ na_ofi_mem_register(na_class_t *na_class, na_mem_handle_t mem_handle)
+@@ -4329,26 +4175,23 @@ na_ofi_mem_register(na_class_t *na_class, na_mem_handle_t mem_handle)
              access = FI_READ | FI_WRITE | FI_REMOTE_READ | FI_REMOTE_WRITE;
              break;
          default:
@@ -29297,7 +29352,7 @@ index aca1919..212f5f7 100644
  
  out:
      return ret;
-@@ -4358,22 +4202,19 @@ out:
+@@ -4358,22 +4201,19 @@ out:
  static na_return_t
  na_ofi_mem_deregister(na_class_t *na_class, na_mem_handle_t mem_handle)
  {
@@ -29326,7 +29381,7 @@ index aca1919..212f5f7 100644
  
  out:
      return ret;
-@@ -4396,11 +4237,8 @@ na_ofi_mem_handle_serialize(na_class_t NA_UNUSED *na_class, void *buf,
+@@ -4396,11 +4236,8 @@ na_ofi_mem_handle_serialize(na_class_t NA_UNUSED *na_class, void *buf,
              (struct na_ofi_mem_handle *) mem_handle;
      na_return_t ret = NA_SUCCESS;
  
@@ -29340,7 +29395,7 @@ index aca1919..212f5f7 100644
  
      /* Copy struct */
      memcpy(buf, &na_ofi_mem_handle->desc, sizeof(na_ofi_mem_handle->desc));
-@@ -4417,23 +4255,17 @@ na_ofi_mem_handle_deserialize(na_class_t NA_UNUSED *na_class,
+@@ -4417,23 +4254,17 @@ na_ofi_mem_handle_deserialize(na_class_t NA_UNUSED *na_class,
      struct na_ofi_mem_handle *na_ofi_mem_handle = NULL;
      na_return_t ret = NA_SUCCESS;
  
@@ -29369,7 +29424,7 @@ index aca1919..212f5f7 100644
  
      *mem_handle = (na_mem_handle_t) na_ofi_mem_handle;
  
-@@ -4450,89 +4282,94 @@ na_ofi_put(na_class_t *na_class, na_context_t *context, na_cb_t callback,
+@@ -4450,89 +4281,94 @@ na_ofi_put(na_class_t *na_class, na_context_t *context, na_cb_t callback,
      na_op_id_t *op_id)
  {
      struct na_ofi_context *ctx = NA_OFI_CONTEXT(context);
@@ -29533,7 +29588,7 @@ index aca1919..212f5f7 100644
      return ret;
  }
  
-@@ -4545,87 +4382,93 @@ na_ofi_get(na_class_t *na_class, na_context_t *context, na_cb_t callback,
+@@ -4545,87 +4381,93 @@ na_ofi_get(na_class_t *na_class, na_context_t *context, na_cb_t callback,
      na_op_id_t *op_id)
  {
      struct na_ofi_context *ctx = NA_OFI_CONTEXT(context);
@@ -29694,7 +29749,7 @@ index aca1919..212f5f7 100644
      return ret;
  }
  
-@@ -4638,17 +4481,14 @@ na_ofi_poll_get_fd(na_class_t *na_class, na_context_t *context)
+@@ -4638,17 +4480,14 @@ na_ofi_poll_get_fd(na_class_t *na_class, na_context_t *context)
      int fd = -1, rc;
  
      if (priv->no_wait ||
@@ -29718,7 +29773,7 @@ index aca1919..212f5f7 100644
  
  out:
      return fd;
-@@ -4663,24 +4503,29 @@ na_ofi_poll_try_wait(na_class_t *na_class, na_context_t *context)
+@@ -4663,24 +4502,29 @@ na_ofi_poll_try_wait(na_class_t *na_class, na_context_t *context)
      struct fid *fids[1];
      int rc;
  
@@ -29754,7 +29809,7 @@ index aca1919..212f5f7 100644
              rc, fi_strerror((int) -rc));
          return NA_FALSE;
      }
-@@ -4698,59 +4543,58 @@ na_ofi_progress(na_class_t *na_class, na_context_t *context,
+@@ -4698,59 +4542,58 @@ na_ofi_progress(na_class_t *na_class, na_context_t *context,
      do {
          struct fi_cq_tagged_entry cq_events[NA_OFI_CQ_EVENT_NUM];
          fi_addr_t src_addrs[NA_OFI_CQ_EVENT_NUM] = {FI_ADDR_UNSPEC};
@@ -29847,7 +29902,7 @@ index aca1919..212f5f7 100644
          }
      } while (remaining > 0 && ret != NA_SUCCESS);
  
-@@ -4764,103 +4608,71 @@ na_ofi_cancel(na_class_t *na_class, na_context_t *context,
+@@ -4764,103 +4607,71 @@ na_ofi_cancel(na_class_t *na_class, na_context_t *context,
      na_op_id_t op_id)
  {
      struct na_ofi_op_id *na_ofi_op_id = (struct na_ofi_op_id *) op_id;
@@ -29864,13 +29919,13 @@ index aca1919..212f5f7 100644
 -        goto out;
 -    }
 -    if (hg_atomic_get32(&na_ofi_op_id->noo_completed))
+-        goto out;
+-    if (!hg_atomic_cas32(&na_ofi_op_id->noo_canceled, NA_FALSE, NA_TRUE)) {
+-        NA_LOG_WARNING("ignore canceling for a canceled op.");
 +    /* Exit if op has already completed */
 +    status = hg_atomic_or32(&na_ofi_op_id->status, NA_OFI_OP_CANCELED);
 +    if ((status & NA_OFI_OP_COMPLETED) || (status & NA_OFI_OP_ERRORED))
          goto out;
--    if (!hg_atomic_cas32(&na_ofi_op_id->noo_canceled, NA_FALSE, NA_TRUE)) {
--        NA_LOG_WARNING("ignore canceling for a canceled op.");
--        goto out;
 -    }
  
 -    hg_atomic_incr32(&na_ofi_op_id->noo_canceled);

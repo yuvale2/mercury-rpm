@@ -1,4 +1,4 @@
-%global mercury_commit 299b06d47e6c1d59a45985dcbbebe3caca0189d0
+%global mercury_commit 41caa143a07ed179a3149cac4af0dc7aa3f946fd
 %global shortmercury_commit %%(c=%%{mercury_commit}; echo ${c:0:7})
 %global kwsys_commit 9da3e5bc847fa4187f42f60700e343a9ed09a161
 %global shortkwsys_commit %%(c=%%{kwsys_commit}; echo ${c:0:7})
@@ -11,7 +11,7 @@
 
 Name: mercury
 Version: 2.0.0a1
-Release: 0.6.git.%{shortmercury_commit}%{?dist}
+Release: 0.7.git.%{shortmercury_commit}%{?dist}
 
 Summary:	Mercury
 
@@ -118,6 +118,9 @@ cd build
 
 
 %changelog
+* Tue Mar 17 2020 Alexander A Oganezov <alexander.a.oganezov@intel.com> - 2.0.0a1-0.7
+- Update to 41caa143a07ed179a3149cac4af0dc7aa3f946fd
+
 * Thu Mar 12 2020 Alexander A Oganezov <alexander.a.oganezov@intel.com> - 2.0.0a1-0.6
 - Update to 299b06d47e6c1d59a45985dcbbebe3caca0189d0
 

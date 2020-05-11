@@ -8,24 +8,25 @@
 %global shortmchecksum_commit %%(c=%%{mchecksum_commit}; echo ${c:0:7})
 
 %bcond_with use_release
+%global dl_version 2.0.0a1
 
 Name: mercury
-Version: 2.0.0a1
-Release: 0.8.git.%{shortmercury_commit}%{?dist}
+Version: 2.0.0~a1
+Release: 1.git.%{shortmercury_commit}%{?dist}
 
 Summary:	Mercury
 
 Group:		Development/Libraries
 License:	ANL
 URL:		http://mercury-hpc.github.io/documentation/
-Source0:	https://github.com/mercury-hpc/%{name}/archive/v%{version}.tar.gz
+Source0:	https://github.com/mercury-hpc/%{name}/archive/v%{dl_version}.tar.gz
 Patch1:		https://github.com/mercury-hpc/mercury/compare/v2.0.0a1..%{mercury_commit}.patch
 Source1:	https://github.com/mercury-hpc/kwsys/archive/%{shortkwsys_commit}.tar.gz
 Source2:	https://github.com/mercury-hpc/preprocessor/archive/%{shortboost_commit}.tar.gz
 Source3:	https://github.com/mercury-hpc/mchecksum/archive/%{shortmchecksum_commit}.tar.gz
 
 BuildRequires:	openpa-devel
-BuildRequires:	libfabric-devel >= 1.5.0
+BuildRequires:	libfabric-devel >= 1.9.0-5
 BuildRequires:	cmake
 BuildRequires:	boost-devel
 BuildRequires:	gcc-c++
@@ -51,6 +52,7 @@ Mercury
 %package devel
 Summary:	Mercury devel package
 Requires:	%{name}%{?_isa} = %{version}-%{release}
+Requires:	libfabric-devel >= 1.9.0-5
 
 %description devel
 Mercury devel
@@ -59,7 +61,7 @@ Mercury devel
 %if %{with use_release}
 %autosetup -p1
 %else
-%setup -q
+%setup -q -n mercury-%dl_version
 %patch1 -p1
 rmdir Testing/driver/kwsys/
 tar -C Testing/driver/ -xzf %{SOURCE1}
@@ -118,6 +120,10 @@ cd build
 
 
 %changelog
+* Thu May 07 2020 Brian J. Murrell <brian.murrell@intel> - 2.0.0~a1-1
+- Fix pre-release tag in Version:
+- Add Requires: libfabric-devel to devel package
+
 * Thu Apr 9 2020 Alexander A Oganezov <alexander.a.oganezov@intel.com> - 2.0.0a1-0.8
 - Update to 4871023058887444d47ead4d089c99db979f3d93
 

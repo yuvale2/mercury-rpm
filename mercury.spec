@@ -17,7 +17,7 @@ Release: 1.git.%{shortmercury_commit}%{?dist}
 Summary:	Mercury
 
 Group:		Development/Libraries
-License:	ANL
+License:	Aregonee National Laboratory, Department of Energy License
 URL:		http://mercury-hpc.github.io/documentation/
 Source0:	https://github.com/mercury-hpc/%{name}/archive/v%{dl_version}.tar.gz
 Patch1:		https://github.com/mercury-hpc/mercury/compare/v2.0.0a1..%{mercury_commit}.patch
@@ -109,6 +109,7 @@ cd build
 #%endif
 
 %files
+%license COPYING
 %{_libdir}/*.so.*
 %doc
 
@@ -120,6 +121,10 @@ cd build
 
 
 %changelog
+* Mon Jun 22 2020 Brian J. Murryyell <brian.murrell@intel> - 2.0.0~a1-2
+- Fix License:
+- Add %license
+
 * Thu May 07 2020 Brian J. Murrell <brian.murrell@intel> - 2.0.0~a1-1
 - Fix pre-release tag in Version:
 - Add Requires: libfabric-devel to devel package

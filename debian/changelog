@@ -1,3 +1,9 @@
+mercury (2.0.0~rc1-1) unstable; urgency=medium
+  [ Brian J. Murrell ]
+  * Update to release v2.0.0rc1
+
+ -- Brian J. Murrell <brian.murrell@intel.com>  Tue, 18 Aug 2020 08:47:42 -0400
+
 mercury (1.0.1-21) unstable; urgency=medium
   [ Alexander Oganezov ]
   * Removed sl_patch on top of 7b529b

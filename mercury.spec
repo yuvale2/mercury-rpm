@@ -1,8 +1,8 @@
-%global dl_version 2.0.0rc1
+%global dl_version 2.0.0rc2
 
 Name: mercury
-Version: 2.0.0~rc1
-Release: 2%{?dist}
+Version: 2.0.0~rc2
+Release: 1%{?dist}
 
 Summary:	Mercury
 
@@ -92,6 +92,9 @@ cd build
 
 
 %changelog
+* Mon Oct 12 2020 Alexander Oganezov <alexander.a.oganezov@intel.com> - 2.0.0~rc2-1
+- Update to release v2.0.0rc2
+
 * Tue Aug 18 2020 Brian J. Murryyell <brian.murrell@intel> - 2.0.0~rc1-2
 - Use release tarball and not individual submodule tarballs
 

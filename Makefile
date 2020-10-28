@@ -1,6 +1,6 @@
 NAME       := mercury
 SRC_EXT    := bz2
-DL_VERSION := 2.0.0rc2
+DL_VERSION := 2.0.0rc3
 
 SLES_15_REPOS = $(OPENSUSE_REPOS_MIRROR)/repositories/science:/HPC/openSUSE_Leap_15.1/
 

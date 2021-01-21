@@ -1,13 +1,18 @@
 Name: mercury
-Version: 2.0.0
+Version: 2.0.1~rc1
 Release: 1%{?dist}
+
+# dl_version is version with ~ removed
+%{lua:
+    rpm.define("dl_version " .. string.gsub(rpm.expand("%{version}"), "~", ""))
+}
 
 Summary:	Mercury
 
 Group:		Development/Libraries
 License:	Aregonee National Laboratory, Department of Energy License
 URL:		http://mercury-hpc.github.io/documentation/
-Source0:	https://github.com/mercury-hpc/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.bz2
+Source0:	https://github.com/mercury-hpc/mercury/archive/v%{dl_version}.tar.gz
 
 BuildRequires:	openpa-devel
 BuildRequires:	libfabric-devel >= 1.9.0-5
@@ -43,7 +48,7 @@ Mercury devel
 
 %prep
 
-%autosetup -n mercury-%version
+%autosetup -n mercury-%dl_version
 
 %build
 mkdir build
@@ -56,7 +61,7 @@ cmake -DMERCURY_USE_CHECKSUMS=OFF                \
       -DMERCURY_USE_SYSTEM_BOOST=ON              \
       -DMERCURY_USE_SELF_FORWARD=ON              \
       -DMERCURY_ENABLE_VERBOSE_ERROR=ON          \
-      -DBUILD_TESTING=ON                         \
+      -DBUILD_TESTING=OFF                        \
       -DNA_USE_OFI=ON                            \
       -DBUILD_DOCUMENTATION=OFF                  \
       -DMERCURY_INSTALL_LIB_DIR=%{_libdir}       \
@@ -90,6 +95,9 @@ cd build
 
 
 %changelog
+* Wed Jan 20 2021 Alexander Oganezov <alexander.a.oganezov@intel.com> - 2.0.1~rc1-1
+- Update to version v2.0.1rc1
+
 * Wed Nov 18 2020 Alexander Oganezov <alexander.a.oganezov@intel.com> - 2.0.0-1
 - Update to release v2.0.0
 

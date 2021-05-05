@@ -14,7 +14,13 @@ License:	Aregonee National Laboratory, Department of Energy License
 URL:		http://mercury-hpc.github.io/documentation/
 Source0:	https://github.com/mercury-hpc/mercury/archive/v%{dl_version}.tar.gz
 
+%if 0%{?suse_version} > 0
+BuildRequires:	libatomic1
+%else
+%if 0%{?rhel} < 8
 BuildRequires:	openpa-devel
+%endif
+%endif
 BuildRequires:	libfabric-devel >= 1.9.0-5
 BuildRequires:	cmake
 BuildRequires:	boost-devel

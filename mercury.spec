@@ -1,6 +1,6 @@
 Name: mercury
 Version: 2.0.1~rc1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
@@ -52,6 +52,12 @@ Requires:	libfabric-devel >= 1.9.0-5
 %description devel
 Mercury devel
 
+%if (0%{?suse_version} > 0)
+%global __debug_package 1
+%global _debuginfo_subpackages 0
+%debug_package
+%endif
+
 %prep
 
 %autosetup -n mercury-%dl_version
@@ -101,6 +107,9 @@ cd build
 
 
 %changelog
+* Mon May 10 2021 Brian J. Murryyell <brian.murrell@intel> - 2.0.1~rc1-2
+- Enable debuginfo package building for SUSE
+
 * Wed Jan 20 2021 Alexander Oganezov <alexander.a.oganezov@intel.com> - 2.0.1~rc1-1
 - Update to version v2.0.1rc1
 

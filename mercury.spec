@@ -1,6 +1,6 @@
 Name: mercury
-Version: 2.0.1~rc1
-Release: 2%{?dist}
+Version: 2.0.1
+Release: 1%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
@@ -107,6 +107,9 @@ cd build
 
 
 %changelog
+* Fri May 14 2021 Alexander Oganezov <alexander.a.oganezov@intel.com> - 2.0.1-1
+- Update to version v2.0.1
+
 * Mon May 10 2021 Brian J. Murryyell <brian.murrell@intel> - 2.0.1~rc1-2
 - Enable debuginfo package building for SUSE
 

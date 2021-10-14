@@ -1,3 +1,9 @@
+mercury (2.1.0~rc2-1) unstable; urgency=medium
+  [ Alexander Oganezov ]
+  * Update to release v2.1.0rc2
+
+ -- Alexander Oganezov <alexander.a.oganezov@intel.com>  Tue, 12 Oct 2021 08:47:42 -0400
+
 mercury (2.0.1-1) unstable; urgency=medium
   [ Alexander Oganezov ]
   * Update to release v2.0.1

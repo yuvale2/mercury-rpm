@@ -1,5 +1,5 @@
 Name: mercury
-Version: 2.1.0~rc2
+Version: 2.1.0~rc4
 Release: 1%{?dist}
 
 # dl_version is version with ~ removed
@@ -60,7 +60,7 @@ Mercury devel
 
 %prep
 
-%autosetup -n mercury-%dl_version
+%autosetup -p1 -n mercury-%dl_version
 
 %build
 mkdir build
@@ -95,7 +95,7 @@ cd build
 #%endif
 
 %files
-%license COPYING
+%license LICENSE.txt
 %{_libdir}/*.so.*
 %doc
 
@@ -107,6 +107,9 @@ cd build
 
 
 %changelog
+* Tue Nov 30 2021 Alexander Oganezov <alexander.a.oganezov@intel.com> - 2.1.0~rc4-1
+- Update to version v2.1.0rc4
+
 * Tue Oct 12 2021 Alexander Oganezov <alexander.a.oganezov@intel.com> - 2.1.0~rc2-1
 - Update to version v2.1.0rc2
 

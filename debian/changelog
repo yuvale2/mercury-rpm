@@ -1,3 +1,9 @@
+mercury (2.1.0~rc4-2) unstable; urgency=medium
+  [ Alexander Oganezov ]
+  * Apply DAOS-9173 workaround patch to na_ofi.c
+
+ -- Alexander Oganezov <alexander.a.oganezov@intel.com>  Tue, 7 Dec 2021 08:47:42 -0400
+
 mercury (2.1.0~rc4-1) unstable; urgency=medium
   [ Alexander Oganezov ]
   * Update to release v2.1.0rc4

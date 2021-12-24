@@ -1,6 +1,6 @@
 Name: mercury
 Version: 2.1.0~rc4
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
@@ -13,7 +13,7 @@ Group:		Development/Libraries
 License:	Aregonee National Laboratory, Department of Energy License
 URL:		http://mercury-hpc.github.io/documentation/
 Source0:	https://github.com/mercury-hpc/mercury/archive/v%{dl_version}.tar.gz
-Patch0:		https://github.com/daos-stack/mercury/daos_9173_workaround.patch
+Patch0:		https://github.com/daos-stack/mercury/cpu_usage.patch
 
 %if 0%{?suse_version} > 0
 BuildRequires:	libatomic1
@@ -108,6 +108,10 @@ cd build
 
 
 %changelog
+* Thu Dec 23 2021 Alexander Oganezov <alexander.a.oganezov@intel.com> - 2.1.0~rc4-3
+- Remove daos-9173 workaround
+- Apply cpu usage fix to mercury
+
 * Tue Dec 7 2021 Alexander Oganezov <alexander.a.oganezov@intel.com> - 2.1.0~rc4-2
 - Apply DAOS-9173 workaround patch to na_ofi.c
 

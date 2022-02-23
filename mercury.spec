@@ -1,31 +1,31 @@
 Name: mercury
 Version: 2.1.0~rc4
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
     rpm.define("dl_version " .. string.gsub(rpm.expand("%{version}"), "~", ""))
 }
 
-Summary:	Mercury
+Summary:  Mercury
 
-Group:		Development/Libraries
-License:	Aregonee National Laboratory, Department of Energy License
-URL:		http://mercury-hpc.github.io/documentation/
-Source0:	https://github.com/mercury-hpc/mercury/archive/v%{dl_version}.tar.gz
-Patch0:		https://github.com/daos-stack/mercury/cpu_usage.patch
+Group:    Development/Libraries
+License:  Aregonee National Laboratory, Department of Energy License
+URL:      http://mercury-hpc.github.io/documentation/
+Source0:  https://github.com/mercury-hpc/mercury/archive/v%{dl_version}.tar.gz
+Patch0:   https://github.com/daos-stack/mercury/cpu_usage.patch
 
 %if 0%{?suse_version} > 0
-BuildRequires:	libatomic1
+BuildRequires:  libatomic1
 %else
 %if 0%{?rhel} < 8
-BuildRequires:	openpa-devel
+BuildRequires:  openpa-devel
 %endif
 %endif
-BuildRequires:	libfabric-devel >= 1.9.0-5
-BuildRequires:	cmake
-BuildRequires:	boost-devel
-BuildRequires:	gcc-c++
+BuildRequires:  libfabric-devel >= 1.9.0-5
+BuildRequires:  cmake
+BuildRequires:  boost-devel
+BuildRequires:  gcc-c++
 %if 0%{?sle_version} >= 150000
 # have choice for libffi.so.7()(64bit) needed by python3-base: ghc-bootstrap libffi7
 # have choice for libffi.so.7(LIBFFI_BASE_7.0)(64bit) needed by python3-base: ghc-bootstrap libffi7
@@ -46,9 +46,9 @@ BuildRequires: libpsm_infinipath1
 Mercury
 
 %package devel
-Summary:	Mercury devel package
-Requires:	%{name}%{?_isa} = %{version}-%{release}
-Requires:	libfabric-devel >= 1.9.0-5
+Summary:  Mercury devel package
+Requires: %{name}%{?_isa} = %{version}-%{release}
+Requires: libfabric-devel >= 1.9.0-5
 
 %description devel
 Mercury devel
@@ -87,13 +87,15 @@ make %{?_smp_mflags}
 cd build
 %make_install
 
-#%if 0%{?suse_version} >= 1315
-#%post -n %{suse_libname} -p /sbin/ldconfig
-#%postun -n %{suse_libname} -p /sbin/ldconfig
-#%else
+%if 0%{?suse_version} >= 1315 
+# only suse needs this; EL bakes it into glibc
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
-#%endif
+%else
+%if 0%{?rhel} < 8
+%ldconfig_scriptlets
+%endif
+%endif
 
 %files
 %license LICENSE.txt
@@ -101,13 +103,18 @@ cd build
 %doc
 
 %files devel
-%{_includedir}
+%{_includedir}/*
 %{_libdir}/*.so
 %{_libdir}/pkgconfig
 %{_datadir}/cmake/
 
 
 %changelog
+* Thu Feb 17 2022 Brian J. Murryyell <brian.murrell@intel> - 2.1.0~rc4-4
+- Fix issues with %%post* ldconfig
+  - No lines are allowed after %%post -p
+  - These are not needed on EL8 as it's glibc does the work
+
 * Thu Dec 23 2021 Alexander Oganezov <alexander.a.oganezov@intel.com> - 2.1.0~rc4-3
 - Remove daos-9173 workaround
 - Apply cpu usage fix to mercury
@@ -147,7 +154,7 @@ cd build
 
 * Mon Jun 22 2020 Brian J. Murryyell <brian.murrell@intel> - 2.0.0~a1-2
 - Fix License:
-- Add %license
+- Add %%license
 
 * Thu May 07 2020 Brian J. Murrell <brian.murrell@intel> - 2.0.0~a1-1
 - Fix pre-release tag in Version:

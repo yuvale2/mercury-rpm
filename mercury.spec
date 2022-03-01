@@ -1,6 +1,6 @@
 Name: mercury
 Version: 2.1.0~rc4
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
@@ -14,6 +14,7 @@ License:  Aregonee National Laboratory, Department of Energy License
 URL:      http://mercury-hpc.github.io/documentation/
 Source0:  https://github.com/mercury-hpc/mercury/archive/v%{dl_version}.tar.gz
 Patch0:   https://github.com/daos-stack/mercury/cpu_usage.patch
+Patch1:   https://github.com/daos-stack/mercury/daos-9561-workaround.patch
 
 %if 0%{?suse_version} > 0
 BuildRequires:  libatomic1
@@ -110,6 +111,9 @@ cd build
 
 
 %changelog
+* Tue Feb 22 2022 Alexander Oganezov <alexander.a.oganezov@intel.com> - 2.1.0~rc4-5
+- Apply doas-9561 workaround
+
 * Thu Feb 17 2022 Brian J. Murryyell <brian.murrell@intel> - 2.1.0~rc4-4
 - Fix issues with %%post* ldconfig
   - No lines are allowed after %%post -p

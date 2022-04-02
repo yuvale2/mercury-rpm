@@ -1,11 +1,24 @@
 Name: mercury
 Version: 2.1.0~rc4
-Release: 6%{?dist}
+Release: 8%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
     rpm.define("dl_version " .. string.gsub(rpm.expand("%{version}"), "~", ""))
 }
+
+%if 0%{?rhel} > 0
+%if 0%{?rhel} > 7
+# only RHEL 8+ has a new enough ucx-devel
+%global ucx 1
+%global basesuffix .base
+%else
+%global ucx 0
+%endif
+%else
+# but assume that anything else does also
+%global ucx 1
+%endif
 
 Summary:  Mercury
 
@@ -15,6 +28,7 @@ URL:      http://mercury-hpc.github.io/documentation/
 Source0:  https://github.com/mercury-hpc/mercury/archive/v%{dl_version}.tar.gz
 Patch0:   https://github.com/daos-stack/mercury/cpu_usage.patch
 Patch1:   https://github.com/daos-stack/mercury/cxi_provider_plus_daos_9561.patch
+Patch2:   https://github.com/daos-stack/mercury/na_ucx_changes.patch
 
 %if 0%{?suse_version} > 0
 BuildRequires:  libatomic1
@@ -41,18 +55,46 @@ BuildRequires: libffi7
 # have choice for libpsm_infinipath.so.1()(64bit) needed by openmpi-libs: libpsm2-compat libpsm_infinipath1
 BuildRequires: libpsm_infinipath1
 %endif
-
+%if 0%{ucx} > 0
+%if (0%{?suse_version} > 0)
+BuildRequires: libucp-devel
+BuildRequires: libucs-devel
+BuildRequires: libuct-devel
+%else
+BuildRequires: ucx-devel
+%endif
+RemovePathPostfixes: .base
+Conflicts: %{name}-ucx
+%endif
 
 %description
 Mercury
+
 
 %package devel
 Summary:  Mercury devel package
 Requires: %{name}%{?_isa} = %{version}-%{release}
 Requires: libfabric-devel >= 1.9.0-5
+%if 0%{ucx} > 0
+RemovePathPostfixes: .base
+%endif
 
 %description devel
 Mercury devel
+
+
+%if 0%{ucx} > 0
+%package ucx
+Summary:  Mercury with UCX provider
+Provides: %{name} = %{version}-%{release}
+Provides: %{name}%{?_isa} = %{version}-%{release}
+%if 0%{ucx} > 0
+RemovePathPostfixes: .ucx
+%endif
+
+%description ucx
+Mercury built with the UCX provider
+%endif
 
 %if (0%{?suse_version} > 0)
 %global __debug_package 1
@@ -64,31 +106,65 @@ Mercury devel
 
 %autosetup -p1 -n mercury-%dl_version
 
+%global variants base
+%if 0%{ucx} > 0
+%global variants %variants ucx
+%endif
+
 %build
-mkdir build
-cd build
-MERCURY_SRC=".."
-cmake -DMERCURY_USE_CHECKSUMS=OFF                \
-      -DCMAKE_INSTALL_PREFIX=%{_prefix}          \
-      -DBUILD_EXAMPLES=OFF                       \
-      -DMERCURY_USE_BOOST_PP=ON                  \
-      -DMERCURY_USE_SYSTEM_BOOST=ON              \
-      -DMERCURY_USE_SELF_FORWARD=ON              \
-      -DMERCURY_ENABLE_VERBOSE_ERROR=ON          \
-      -DBUILD_TESTING=OFF                        \
-      -DNA_USE_OFI=ON                            \
-      -DBUILD_DOCUMENTATION=OFF                  \
-      -DMERCURY_INSTALL_LIB_DIR=%{_libdir}       \
-      -DBUILD_SHARED_LIBS=ON $MERCURY_SRC        \
-      ..
-make %{?_smp_mflags}
+args_base=""
+args_ucx="-DNA_USE_UCX=ON                    \
+          -DUCX_INCLUDE_DIR=%{_includedir}   \
+          -DUCP_LIBRARY=%{_libdir}/libucp.so \
+          -DUCS_LIBRARY=%{_libdir}/libucs.so \
+          -DUCT_LIBRARY=%{_libdir}/libuct.so"
+for v in %{variants}; do
+    rm -rf $v
+    mkdir $v
+    pushd $v
+    vv="args_$v"
+    cmake -DMERCURY_USE_CHECKSUMS=OFF          \
+          -DCMAKE_INSTALL_PREFIX=%{_prefix}    \
+          -DBUILD_EXAMPLES=OFF                 \
+          -DMERCURY_USE_BOOST_PP=ON            \
+          -DMERCURY_USE_SYSTEM_BOOST=ON        \
+          -DBUILD_TESTING=OFF                  \
+          -DNA_USE_OFI=ON                      \
+          -DBUILD_DOCUMENTATION=OFF            \
+          -DMERCURY_INSTALL_LIB_DIR=%{_libdir} \
+          -DBUILD_SHARED_LIBS=ON               \
+          ${!vv}                               \
+          ..
+    make %{?_smp_mflags}
+    popd
+done
 
 
 %install
-cd build
-%make_install
+rm -rf $RPM_BUILD_ROOT/.variants/
+mkdir -p $RPM_BUILD_ROOT/.variants/
+for v in %{variants}; do
+    pushd $v
+    %make_install
+%if 0%{ucx} > 0
+    find $RPM_BUILD_ROOT -name .variants -prune -o -type f -print0 | xargs -0i mv {}{,.$v}
+    # move it out of the way for other variants
+    mkdir $RPM_BUILD_ROOT/.variants/$v
+    mv $RPM_BUILD_ROOT/* $RPM_BUILD_ROOT/.variants/$v
+    popd
+%endif
+done
+# now merge them together
+%if 0%{ucx} > 0
+for v in %{variants}; do
+    cp -al $RPM_BUILD_ROOT/.variants/$v/* $RPM_BUILD_ROOT/
+done
+# remove unpackaged file
+find $RPM_BUILD_ROOT{%{_includedir},%{_libdir}/pkgconfig,%{_datadir}/cmake/} -name \*.ucx | xargs rm -f
+%endif
+rm -rf $RPM_BUILD_ROOT/.variants
 
-%if 0%{?suse_version} >= 1315 
+%if 0%{?suse_version} >= 1315
 # only suse needs this; EL bakes it into glibc
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
@@ -100,24 +176,41 @@ cd build
 
 %files
 %license LICENSE.txt
+%exclude %{_libdir}/*.so.*.ucx
 %{_libdir}/*.so.*
 %doc
 
+%if 0%{ucx} > 0
+%files ucx
+%license LICENSE.txt
+%exclude %{_libdir}/*.so.*.base
+%{_libdir}/*.so.*
+%doc
+%endif
+
 %files devel
-%{_includedir}/*
+%{_includedir}/*%{?basesuffix}
 %{_libdir}/*.so
 %{_libdir}/pkgconfig
 %{_datadir}/cmake/
 
-
 %changelog
+* Fri Apr  1 2022 Brian J. Murrell <brian.murrell@intel> - 2.1.0~rc4-8
+- Build with ucx subpackage on supported platforms
+- Removed invalid build options:
+  * MERCURY_ENABLE_VERBOSE_ERROR
+  * MERCURY_USE_SELF_FORWARD
+
+* Thu Mar 31 2022 Joseph Moore <joseph.moore@intel.com> - 2.1.0~rc4-7
+- Apply daos-9679 address parsing change and active message revision to na_ucx.c.
+
 * Fri Mar 11 2022 Alexander Oganezov <alexander.a.oganezov@intel.com> - 2.1.0~rc4-6
 - Apply cxi provider patch
 
 * Tue Feb 22 2022 Alexander Oganezov <alexander.a.oganezov@intel.com> - 2.1.0~rc4-5
 - Apply doas-9561 workaround
 
-* Thu Feb 17 2022 Brian J. Murryyell <brian.murrell@intel> - 2.1.0~rc4-4
+* Thu Feb 17 2022 Brian J. Murrell <brian.murrell@intel> - 2.1.0~rc4-4
 - Fix issues with %%post* ldconfig
   - No lines are allowed after %%post -p
   - These are not needed on EL8 as it's glibc does the work

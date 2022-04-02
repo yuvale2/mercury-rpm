@@ -1,3 +1,15 @@
+mercury (2.1.0~rc4-8) unstable; urgency=medium
+  [ Brian J. Murrell ]
+  * Build with ucx subpackage on supported platforms
+
+ -- Brian J. Murrell <brian.murrell@intel.com>  Fri, 1 Apr 2022 19:54:24 -0500
+
+mercury (2.1.0~rc4-7) unstable; urgency=medium
+  [ Joseph Moore ]
+  * Apply daos-9679 address parsing change and active message revision to na_ucx.c.
+
+ -- Joseph Moore <joseph.moore@intel.com>  Thu, 31 Mar 2022 14:42:42 -0400
+
 mercury (2.1.0~rc4-6) unstable; urgency=medium
   [ Alexander Oganezov ]
   * Apply cxi provider patch

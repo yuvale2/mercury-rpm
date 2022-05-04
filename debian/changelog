@@ -1,3 +1,9 @@
+mercury (2.1.0~rc4-9) unstable; urgency=medium
+  [ Joseph Moore ]
+  * Update ucx patch to disable unified mode.
+
+ -- Joseph Moore <joseph.moore@intel.com> Fri Apr 22 20:19:07 -400
+
 mercury (2.1.0~rc4-8) unstable; urgency=medium
   [ Brian J. Murrell ]
   * Build with ucx subpackage on supported platforms

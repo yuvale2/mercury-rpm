@@ -1,6 +1,6 @@
 Name: mercury
 Version: 2.1.0~rc4
-Release: 8%{?dist}
+Release: 9%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
@@ -23,7 +23,7 @@ Release: 8%{?dist}
 Summary:  Mercury
 
 Group:    Development/Libraries
-License:  Aregonee National Laboratory, Department of Energy License
+License:  Argonne National Laboratory, Department of Energy License
 URL:      http://mercury-hpc.github.io/documentation/
 Source0:  https://github.com/mercury-hpc/mercury/archive/v%{dl_version}.tar.gz
 Patch0:   https://github.com/daos-stack/mercury/cpu_usage.patch
@@ -195,6 +195,9 @@ rm -rf $RPM_BUILD_ROOT/.variants
 %{_datadir}/cmake/
 
 %changelog
+* Fri Apr 22 2022 Joseph Moore <joseph.moore@intel.com> - 2.1.0~rc4-9
+- Change ucx unified mode to off (updated UCX patch file).
+
 * Fri Apr  1 2022 Brian J. Murrell <brian.murrell@intel> - 2.1.0~rc4-8
 - Build with ucx subpackage on supported platforms
 - Removed invalid build options:

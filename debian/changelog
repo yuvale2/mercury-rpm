@@ -1,8 +1,14 @@
+mercury (2.2.0~rc6-1) unstable; urgency=medium
+  [ Jerome Soumagne ]
+  * Update mercury to 2.2.0~rc6
+
+ -- Jerome Soumagne <jerome.soumagne@intel.com>  Mon, 27 Jun 2022 16:50:23 -0600
+
 mercury (2.1.0~rc4-9) unstable; urgency=medium
   [ Joseph Moore ]
   * Update ucx patch to disable unified mode.
 
- -- Joseph Moore <joseph.moore@intel.com> Fri Apr 22 20:19:07 -400
+ -- Joseph Moore <joseph.moore@intel.com>  Fri, 22 Apr 2022 20:19:07 -0400
 
 mercury (2.1.0~rc4-8) unstable; urgency=medium
   [ Brian J. Murrell ]

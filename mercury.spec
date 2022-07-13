@@ -1,6 +1,6 @@
 Name: mercury
-Version: 2.1.0~rc4
-Release: 9%{?dist}
+Version: 2.2.0~rc6
+Release: 1%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
@@ -26,18 +26,11 @@ Group:    Development/Libraries
 License:  Argonne National Laboratory, Department of Energy License
 URL:      http://mercury-hpc.github.io/documentation/
 Source0:  https://github.com/mercury-hpc/mercury/archive/v%{dl_version}.tar.gz
-Patch0:   https://github.com/daos-stack/mercury/cpu_usage.patch
-Patch1:   https://github.com/daos-stack/mercury/cxi_provider_plus_daos_9561.patch
-Patch2:   https://github.com/daos-stack/mercury/na_ucx_changes.patch
+# Only apply patch against rpm version of mercury to maintain backward compatibility
+# with HPE libfabric v1.14.0 with suppport for CXI
+Patch0:   cxi_libfabric115_compat.patch
 
-%if 0%{?suse_version} > 0
-BuildRequires:  libatomic1
-%else
-%if 0%{?rhel} < 8
-BuildRequires:  openpa-devel
-%endif
-%endif
-BuildRequires:  libfabric-devel >= 1.9.0-5
+BuildRequires:  libfabric-devel >= 1.14.0
 BuildRequires:  cmake
 BuildRequires:  boost-devel
 BuildRequires:  gcc-c++
@@ -74,7 +67,6 @@ Mercury
 %package devel
 Summary:  Mercury devel package
 Requires: %{name}%{?_isa} = %{version}-%{release}
-Requires: libfabric-devel >= 1.9.0-5
 %if 0%{ucx} > 0
 RemovePathPostfixes: .base
 %endif
@@ -125,7 +117,9 @@ for v in %{variants}; do
     vv="args_$v"
     cmake -DMERCURY_USE_CHECKSUMS=OFF          \
           -DCMAKE_INSTALL_PREFIX=%{_prefix}    \
+          -DCMAKE_SKIP_INSTALL_RPATH=ON        \
           -DBUILD_EXAMPLES=OFF                 \
+          -DMERCURY_ENABLE_DEBUG=ON            \
           -DMERCURY_USE_BOOST_PP=ON            \
           -DMERCURY_USE_SYSTEM_BOOST=ON        \
           -DBUILD_TESTING=OFF                  \
@@ -195,6 +189,11 @@ rm -rf $RPM_BUILD_ROOT/.variants
 %{_datadir}/cmake/
 
 %changelog
+* Mon Jun 27 2022 Jerome Soumagne <jerome.soumagne@intel.com> - 2.2.0~rc6-1
+- Update to 2.2.0rc6
+- Skip install rpath, enable debug log.
+- Remove openpa dependency.
+
 * Fri Apr 22 2022 Joseph Moore <joseph.moore@intel.com> - 2.1.0~rc4-9
 - Change ucx unified mode to off (updated UCX patch file).
 

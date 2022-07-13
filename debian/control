@@ -5,7 +5,7 @@ Build-Depends: debhelper (>= 10),
                cmake,
                libboost-dev,
                libevent-dev,
-               libfabric-dev,
+               libfabric-dev (>= 1.14.0-1),
                pkg-config
 Standards-Version: 4.1.2
 Section: libs

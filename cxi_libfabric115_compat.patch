@@ -1,0 +1,14 @@
+diff --git a/src/na/na_ofi.c b/src/na/na_ofi.c
+index da61542..f8c4445 100644
+--- a/src/na/na_ofi.c
++++ b/src/na/na_ofi.c
+@@ -67,9 +67,6 @@
+     FI_VERSION(1, 15))
+ #    define FI_ADDR_CXI  (FI_ADDR_PSMX3 + 1)
+ #    define FI_PROTO_CXI (FI_PROTO_PSMX3 + 1)
+-#else
+-#    define FI_ADDR_CXI  (FI_ADDR_OPX + 1)
+-#    define FI_PROTO_CXI (FI_PROTO_OPX + 1)
+ #endif
+ 
+ /* Default basic bits */

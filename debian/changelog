@@ -1,3 +1,9 @@
+mercury (2.2.0-1) unstable; urgency=medium
+  [ Jerome Soumagne ]
+  * Update to 2.2.0
+
+ -- Jerome Soumagne <jerome.soumagne@intel.com>  Fri, 5 Aug 2022 17:09:23 -0600
+
 mercury (2.2.0~rc6-2) unstable; urgency=medium
   [ Jerome Soumagne ]
   * Rebuild after libfabric rpm dropped CXI compat patch

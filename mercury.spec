@@ -1,6 +1,6 @@
 Name: mercury
-Version: 2.2.0~rc6
-Release: 2%{?dist}
+Version: 2.2.0
+Release: 1%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
@@ -186,6 +186,9 @@ rm -rf $RPM_BUILD_ROOT/.variants
 %{_datadir}/cmake/
 
 %changelog
+* Fri Aug  5 2022 Jerome Soumagne <jerome.soumagne@intel.com> - 2.2.0-1
+- Update to 2.2.0
+
 * Mon Aug  1 2022 Jerome Soumagne <jerome.soumagne@intel.com> - 2.2.0~rc6-2
 - Rebuild after libfabric rpm dropped CXI compat patch
 - Drop CXI compat patch

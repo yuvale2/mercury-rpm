@@ -1,6 +1,6 @@
 Name: mercury
 Version: 2.2.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
@@ -26,6 +26,7 @@ Group:    Development/Libraries
 License:  Argonne National Laboratory, Department of Energy License
 URL:      http://mercury-hpc.github.io/documentation/
 Source0:  https://github.com/mercury-hpc/mercury/archive/v%{dl_version}.tar.gz
+Patch0:   na_ucx_local_addr.patch
 
 BuildRequires:  libfabric-devel >= 1.14.0
 BuildRequires:  cmake
@@ -186,6 +187,9 @@ rm -rf $RPM_BUILD_ROOT/.variants
 %{_datadir}/cmake/
 
 %changelog
+* Fri Sep 09 2022 Joseph Moore <joseph.moore@intel.com> - 2.2.0-2
+- Add na_ucx.c patch to change ep creation for single IB device.
+
 * Fri Aug  5 2022 Jerome Soumagne <jerome.soumagne@intel.com> - 2.2.0-1
 - Update to 2.2.0
 

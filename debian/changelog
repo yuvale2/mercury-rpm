@@ -1,3 +1,9 @@
+mercury (2.2.0-2) unstable; urgency=medium
+  [ Joseph Moore ]
+  * Add ucx patch to include local address in ep for single IB device.
+
+ -- Joseph Moore <joseph.moore@intel.com>  Fri Sep 09 2022 13:33:04 -0500
+
 mercury (2.2.0-1) unstable; urgency=medium
   [ Jerome Soumagne ]
   * Update to 2.2.0

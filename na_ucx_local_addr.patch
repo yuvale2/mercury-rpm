@@ -103,7 +103,7 @@ index db4fc75..20a9af2 100644
          .sockaddr = (ucs_sock_addr_t){.addr = addr, .addrlen = addrlen},
          .conn_request = NULL};
  
-+    if (addr) {
++    if (local_addr) {
 +    	ep_params.field_mask |= UCP_EP_PARAM_FIELD_LOCAL_SOCK_ADDR;
 +        ep_params.local_sockaddr.addr = (const struct sockaddr*) local_addr;
 +        ep_params.local_sockaddr.addrlen = sizeof(*local_addr);

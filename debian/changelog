@@ -1,3 +1,9 @@
+mercury (2.2.0-3) unstable; urgency=medium
+  [ Joseph Moore ]
+  * Fix defect in connect function.
+
+ -- Joseph Moore <joseph.moore@intel.com>  Tue Sep 20 2022 10:11:20 -0500
+
 mercury (2.2.0-2) unstable; urgency=medium
   [ Joseph Moore ]
   * Add ucx patch to include local address in ep for single IB device.

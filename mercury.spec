@@ -1,6 +1,6 @@
 Name: mercury
 Version: 2.2.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
@@ -187,6 +187,9 @@ rm -rf $RPM_BUILD_ROOT/.variants
 %{_datadir}/cmake/
 
 %changelog
+* Tue Sep 20 2022 Joseph Moore <joseph.moore@intel.com> - 2.2.0-3
+- Fix defect in connect function.
+
 * Fri Sep 09 2022 Joseph Moore <joseph.moore@intel.com> - 2.2.0-2
 - Add na_ucx.c patch to change ep creation for single IB device.
 

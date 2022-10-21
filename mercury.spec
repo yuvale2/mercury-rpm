@@ -1,6 +1,6 @@
 Name: mercury
 Version: 2.2.0
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
@@ -26,7 +26,7 @@ Group:    Development/Libraries
 License:  Argonne National Laboratory, Department of Energy License
 URL:      http://mercury-hpc.github.io/documentation/
 Source0:  https://github.com/mercury-hpc/mercury/archive/v%{dl_version}.tar.gz
-Patch0:   na_ucx_local_addr.patch
+Patch0:   na_ucx.patch
 
 BuildRequires:  libfabric-devel >= 1.14.0
 BuildRequires:  cmake
@@ -187,6 +187,9 @@ rm -rf $RPM_BUILD_ROOT/.variants
 %{_datadir}/cmake/
 
 %changelog
+* Wed Oct 05 2022 Joseph Moore <joseph.moore@intel.com> - 2.2.0-4
+- Update na_ucx.c patch to include UCX status to NA error mapping.
+
 * Tue Sep 20 2022 Joseph Moore <joseph.moore@intel.com> - 2.2.0-3
 - Fix defect in connect function.
 

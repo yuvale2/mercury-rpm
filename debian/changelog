@@ -1,3 +1,9 @@
+mercury (2.2.0-4) unstable; urgency=medium
+  [ Joseph Moore ]
+  * Update na_ucx.c patch to include UCX status to NA error mapping.
+
+ -- Joseph Moore <joseph.moore@intel.com>  Wed Oct 05 2022 11:07:30 -0500
+
 mercury (2.2.0-3) unstable; urgency=medium
   [ Joseph Moore ]
   * Fix defect in connect function.

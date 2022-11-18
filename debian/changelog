@@ -1,3 +1,9 @@
+mercury (2.2.0-5) unstable; urgency=medium
+  [ Joseph Moore ]
+  * Update na_ucx.c patch to support reconnect following disconnection..
+
+ -- Joseph Moore <joseph.moore@intel.com>  Thu Nov 17 2022 10:39:15 -0500
+
 mercury (2.2.0-4) unstable; urgency=medium
   [ Joseph Moore ]
   * Update na_ucx.c patch to include UCX status to NA error mapping.

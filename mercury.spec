@@ -1,6 +1,6 @@
 Name: mercury
 Version: 2.2.0
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
@@ -187,6 +187,9 @@ rm -rf $RPM_BUILD_ROOT/.variants
 %{_datadir}/cmake/
 
 %changelog
+* Thu Nov 17 2022 Joseph Moore <joseph.moore@intel.com> - 2.2.0-5
+- Update na_ucx.c patch to support reconnection following a disconnect.
+
 * Wed Oct 05 2022 Joseph Moore <joseph.moore@intel.com> - 2.2.0-4
 - Update na_ucx.c patch to include UCX status to NA error mapping.
 

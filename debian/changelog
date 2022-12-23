@@ -1,3 +1,9 @@
+mercury (2.2.0-6) unstable; urgency=medium
+  [ Alexander Oganezov ]
+  * Regenerate LEAP15.4 rpms
+
+ -- Alexander Oganezov <alexander.a.oganezov@intel.com>  Thu Dec 22 2022 10:39:15 -0500
+
 mercury (2.2.0-5) unstable; urgency=medium
   [ Joseph Moore ]
   * Update na_ucx.c patch to support reconnect following disconnection..

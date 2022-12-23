@@ -1,6 +1,6 @@
 Name: mercury
 Version: 2.2.0
-Release: 5%{?dist}
+Release: 6%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
@@ -187,6 +187,9 @@ rm -rf $RPM_BUILD_ROOT/.variants
 %{_datadir}/cmake/
 
 %changelog
+* Thu Dec 22 2022 Joseph Moore <alexander.a.oganezov@intel.com> - 2.2.0-6
+- Regenerate packages for LEAP15.4
+
 * Thu Nov 17 2022 Joseph Moore <joseph.moore@intel.com> - 2.2.0-5
 - Update na_ucx.c patch to support reconnection following a disconnect.
 

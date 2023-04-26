@@ -1,32 +1,41 @@
+mercury (2.3.0~rc5-1) unstable; urgency=medium
+  [ Jerome Soumagne ]
+  * Update to 2.3.0rc5
+  * Remove na_ucx.c patch and add temporary na_ucx_src_port.patch
+  * Update build to make use of NA dynamic plugins
+  * Fix source URL and package perf tests
+
+ -- Jerome Soumagne <jerome.soumagne@intel.com>  Tue, 25 Apr 2023 11:00:00 -0600
+
 mercury (2.2.0-6) unstable; urgency=medium
   [ Alexander Oganezov ]
   * Regenerate LEAP15.4 rpms
 
- -- Alexander Oganezov <alexander.a.oganezov@intel.com>  Thu Dec 22 2022 10:39:15 -0500
+ -- Alexander Oganezov <alexander.a.oganezov@intel.com>  Thu, 22 Dec 2022 10:39:15 -0500
 
 mercury (2.2.0-5) unstable; urgency=medium
   [ Joseph Moore ]
   * Update na_ucx.c patch to support reconnect following disconnection..
 
- -- Joseph Moore <joseph.moore@intel.com>  Thu Nov 17 2022 10:39:15 -0500
+ -- Joseph Moore <joseph.moore@intel.com>  Thu, 17 Nov 2022 10:39:15 -0500
 
 mercury (2.2.0-4) unstable; urgency=medium
   [ Joseph Moore ]
   * Update na_ucx.c patch to include UCX status to NA error mapping.
 
- -- Joseph Moore <joseph.moore@intel.com>  Wed Oct 05 2022 11:07:30 -0500
+ -- Joseph Moore <joseph.moore@intel.com>  Wed, 5 Oct 2022 11:07:30 -0500
 
 mercury (2.2.0-3) unstable; urgency=medium
   [ Joseph Moore ]
   * Fix defect in connect function.
 
- -- Joseph Moore <joseph.moore@intel.com>  Tue Sep 20 2022 10:11:20 -0500
+ -- Joseph Moore <joseph.moore@intel.com>  Tue, 20 Sep 2022 10:11:20 -0500
 
 mercury (2.2.0-2) unstable; urgency=medium
   [ Joseph Moore ]
   * Add ucx patch to include local address in ep for single IB device.
 
- -- Joseph Moore <joseph.moore@intel.com>  Fri Sep 09 2022 13:33:04 -0500
+ -- Joseph Moore <joseph.moore@intel.com>  Fri, 9 Sep 2022 13:33:04 -0500
 
 mercury (2.2.0-1) unstable; urgency=medium
   [ Jerome Soumagne ]
@@ -39,7 +48,7 @@ mercury (2.2.0~rc6-2) unstable; urgency=medium
   * Rebuild after libfabric rpm dropped CXI compat patch
   * Drop CXI compat patch
 
- -- Jerome Soumagne <jerome.soumagne@intel.com>  Mon,  1 Aug 2022 18:25:23 -0600
+ -- Jerome Soumagne <jerome.soumagne@intel.com>  Mon, 1 Aug 2022 18:25:23 -0600
 
 mercury (2.2.0~rc6-1) unstable; urgency=medium
   [ Jerome Soumagne ]

@@ -1,6 +1,6 @@
 Name: mercury
-Version: 2.2.0
-Release: 6%{?dist}
+Version: 2.3.0~rc5
+Release: 1%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
@@ -11,7 +11,6 @@ Release: 6%{?dist}
 %if 0%{?rhel} > 7
 # only RHEL 8+ has a new enough ucx-devel
 %global ucx 1
-%global basesuffix .base
 %else
 %global ucx 0
 %endif
@@ -20,141 +19,102 @@ Release: 6%{?dist}
 %global ucx 1
 %endif
 
-Summary:  Mercury
+# do not build perf binaries on CentOS7 due to CMake PIE issues
+# see: https://cmake.org/cmake/help/latest/policy/CMP0083.html#policy:CMP0083
+%if 0%{?rhel} >= 8 || 0%{?suse_version} >= 1315
+%global __build_perf 1
+%else
+%global __build_perf 0
+%endif
 
+# necessary for old cmake environments (e.g., CentOS7)
+%{?!cmake_build:%global cmake_build %__cmake --build %{_vpath_srcdir}}
+%{?!cmake_install:%global cmake_install %make_install}
+
+Summary:  RPC library for HPC systems
+License:  BSD
 Group:    Development/Libraries
-License:  Argonne National Laboratory, Department of Energy License
-URL:      http://mercury-hpc.github.io/documentation/
-Source0:  https://github.com/mercury-hpc/mercury/archive/v%{dl_version}.tar.gz
-Patch0:   na_ucx.patch
+URL:      http://mercury-hpc.github.io/
+Source0:  https://github.com/mercury-hpc/%{name}/releases/download/v%{dl_version}/%{name}-%{dl_version}.tar.bz2
+# https://github.com/mercury-hpc/mercury/commit/8007bd7d7467100983948f76c9232a3eb7d281c6.patch
+Patch0:   na_ucx_src_port.patch
 
 BuildRequires:  libfabric-devel >= 1.14.0
 BuildRequires:  cmake
 BuildRequires:  boost-devel
 BuildRequires:  gcc-c++
-%if 0%{?sle_version} >= 150000
-# have choice for libffi.so.7()(64bit) needed by python3-base: ghc-bootstrap libffi7
-# have choice for libffi.so.7(LIBFFI_BASE_7.0)(64bit) needed by python3-base: ghc-bootstrap libffi7
-# have choice for libffi.so.7(LIBFFI_CLOSURE_7.0)(64bit) needed by python3-base: ghc-bootstrap libffi7
-BuildRequires: libffi7
-%endif
-# according to https://en.opensuse.org/openSUSE:Build_Service_cross_distribution_howto
-# this should be 120300
-# according to my debugging, it's not even set until the rpm is being built
-%if 0%{?suse_version} >= 1315 && !0%{?is_opensuse}
-# have choice for libpsm_infinipath.so.1()(64bit) needed by libfabric1: libpsm2-compat libpsm_infinipath1
-# have choice for libpsm_infinipath.so.1()(64bit) needed by openmpi-libs: libpsm2-compat libpsm_infinipath1
-BuildRequires: libpsm_infinipath1
-%endif
-%if 0%{ucx} > 0
-%if (0%{?suse_version} > 0)
-BuildRequires: libucp-devel
-BuildRequires: libucs-devel
-BuildRequires: libuct-devel
+%if %{ucx}
+%if 0%{?suse_version}
+BuildRequires: libucp-devel, libucs-devel, libuct-devel
 %else
 BuildRequires: ucx-devel
 %endif
-RemovePathPostfixes: .base
-Conflicts: %{name}-ucx
 %endif
 
 %description
-Mercury
+Mercury is a Remote Procedure Call (RPC) framework specifically
+designed for use in High-Performance Computing (HPC) systems with
+high-performance fabrics. Its network implementation is abstracted
+to make efficient use of native transports and allow easy porting
+to a variety of systems. Mercury supports asynchronous transfer of
+parameters and execution requests, and has dedicated support for
+large data arguments that are transferred using Remote Memory
+Access (RMA). Its interface is generic and allows any function
+call to be serialized. Since code generation is done using the C
+preprocessor, no external tool is required.
 
 
 %package devel
 Summary:  Mercury devel package
 Requires: %{name}%{?_isa} = %{version}-%{release}
-%if 0%{ucx} > 0
-RemovePathPostfixes: .base
-%endif
 
 %description devel
-Mercury devel
+Mercury development headers and libraries.
 
 
-%if 0%{ucx} > 0
+%if %{ucx}
 %package ucx
-Summary:  Mercury with UCX provider
-Provides: %{name} = %{version}-%{release}
-Provides: %{name}%{?_isa} = %{version}-%{release}
-%if 0%{ucx} > 0
-RemovePathPostfixes: .ucx
-%endif
+Summary:  Mercury with UCX
+Requires: %{name}%{?_isa} = %{version}-%{release}
 
 %description ucx
-Mercury built with the UCX provider
+Mercury plugin to support the UCX transport.
 %endif
 
-%if (0%{?suse_version} > 0)
+%if 0%{?suse_version}
 %global __debug_package 1
 %global _debuginfo_subpackages 0
 %debug_package
 %endif
 
 %prep
-
 %autosetup -p1 -n mercury-%dl_version
 
-%global variants base
-%if 0%{ucx} > 0
-%global variants %variants ucx
-%endif
-
 %build
-args_base=""
-args_ucx="-DNA_USE_UCX=ON                    \
-          -DUCX_INCLUDE_DIR=%{_includedir}   \
-          -DUCP_LIBRARY=%{_libdir}/libucp.so \
-          -DUCS_LIBRARY=%{_libdir}/libucs.so \
-          -DUCT_LIBRARY=%{_libdir}/libuct.so"
-for v in %{variants}; do
-    rm -rf $v
-    mkdir $v
-    pushd $v
-    vv="args_$v"
-    cmake -DMERCURY_USE_CHECKSUMS=OFF          \
-          -DCMAKE_INSTALL_PREFIX=%{_prefix}    \
-          -DCMAKE_SKIP_INSTALL_RPATH=ON        \
-          -DBUILD_EXAMPLES=OFF                 \
-          -DMERCURY_ENABLE_DEBUG=ON            \
-          -DMERCURY_USE_BOOST_PP=ON            \
-          -DMERCURY_USE_SYSTEM_BOOST=ON        \
-          -DBUILD_TESTING=OFF                  \
-          -DNA_USE_OFI=ON                      \
-          -DBUILD_DOCUMENTATION=OFF            \
-          -DMERCURY_INSTALL_LIB_DIR=%{_libdir} \
-          -DBUILD_SHARED_LIBS=ON               \
-          ${!vv}                               \
-          ..
-    make %{?_smp_mflags}
-    popd
-done
-
+%cmake  -DCMAKE_IN_SOURCE_BUILD:BOOL=ON                   \
+        -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo          \
+        -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON                \
+        -DBUILD_DOCUMENTATION:BOOL=OFF                    \
+        -DBUILD_EXAMPLES:BOOL=OFF                         \
+        -DBUILD_TESTING:BOOL=%{__build_perf}              \
+        -DBUILD_TESTING_PERF:BOOL=%{__build_perf}         \
+        -DBUILD_TESTING_UNIT:BOOL=OFF                     \
+        -DMERCURY_ENABLE_DEBUG:BOOL=ON                    \
+        -DMERCURY_INSTALL_DATA_DIR:PATH=%{_libdir}        \
+        -DMERCURY_INSTALL_LIB_DIR:PATH=%{_libdir}         \
+        -DMERCURY_USE_BOOST_PP:BOOL=ON                    \
+        -DMERCURY_USE_CHECKSUMS:BOOL=OFF                  \
+        -DMERCURY_USE_SYSTEM_BOOST:BOOL=ON                \
+        -DMERCURY_USE_XDR:BOOL=OFF                        \
+        -DNA_USE_DYNAMIC_PLUGINS:BOOL=ON                  \
+        -DNA_INSTALL_PLUGIN_DIR:PATH=%{_libdir}/mercury   \
+        -DNA_USE_SM:BOOL=ON                               \
+        -DNA_USE_UCX:BOOL=%{ucx}                          \
+        -DNA_USE_OFI:BOOL=ON
+%cmake_build
 
 %install
-rm -rf $RPM_BUILD_ROOT/.variants/
-mkdir -p $RPM_BUILD_ROOT/.variants/
-for v in %{variants}; do
-    pushd $v
-    %make_install
-%if 0%{ucx} > 0
-    find $RPM_BUILD_ROOT -name .variants -prune -o -type f -print0 | xargs -0i mv {}{,.$v}
-    # move it out of the way for other variants
-    mkdir $RPM_BUILD_ROOT/.variants/$v
-    mv $RPM_BUILD_ROOT/* $RPM_BUILD_ROOT/.variants/$v
-    popd
-%endif
-done
-# now merge them together
-%if 0%{ucx} > 0
-for v in %{variants}; do
-    cp -al $RPM_BUILD_ROOT/.variants/$v/* $RPM_BUILD_ROOT/
-done
-# remove unpackaged file
-find $RPM_BUILD_ROOT{%{_includedir},%{_libdir}/pkgconfig,%{_datadir}/cmake/} -name \*.ucx | xargs rm -f
-%endif
-rm -rf $RPM_BUILD_ROOT/.variants
+%cmake_install
 
 %if 0%{?suse_version} >= 1315
 # only suse needs this; EL bakes it into glibc
@@ -168,25 +128,36 @@ rm -rf $RPM_BUILD_ROOT/.variants
 
 %files
 %license LICENSE.txt
-%exclude %{_libdir}/*.so.*.ucx
+%doc Documentation/CHANGES.md
+%if %{__build_perf}
+%{_bindir}/hg_*
+%{_bindir}/na_*
+%endif
 %{_libdir}/*.so.*
-%doc
+%{_libdir}/mercury/libna_plugin_ofi.so
 
-%if 0%{ucx} > 0
+%if %{ucx}
 %files ucx
-%license LICENSE.txt
-%exclude %{_libdir}/*.so.*.base
-%{_libdir}/*.so.*
-%doc
+%{_libdir}/mercury/libna_plugin_ucx.so
 %endif
 
 %files devel
-%{_includedir}/*%{?basesuffix}
-%{_libdir}/*.so
-%{_libdir}/pkgconfig
-%{_datadir}/cmake/
+%license LICENSE.txt
+%doc README.md
+%{_includedir}/*
+%{_libdir}/libmercury.so
+%{_libdir}/libmercury_util.so
+%{_libdir}/libna.so
+%{_libdir}/pkgconfig/*.pc
+%{_libdir}/cmake/
 
 %changelog
+* Tue Apr 25 2023 Jerome Soumagne <jerome.soumagne@intel.com> - 2.3.0~rc5-1
+- Update to 2.3.0rc5
+- Remove na_ucx.c patch and add temporary na_ucx_src_port.patch
+- Update build to make use of NA dynamic plugins
+- Fix source URL and package perf tests
+
 * Thu Dec 22 2022 Joseph Moore <alexander.a.oganezov@intel.com> - 2.2.0-6
 - Regenerate packages for LEAP15.4
 

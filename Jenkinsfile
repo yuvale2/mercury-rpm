@@ -1,5 +1,5 @@
 #!/usr/bin/groovy
-/* Copyright (C) 2019-2022 Intel Corporation
+/* Copyright (C) 2019-2023 Intel Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,6 +41,6 @@
 //@Library(value="pipeline-lib@your_branch") _
 
 
-packageBuildingPipelineDAOSTest(['distros': ['el8', 'centos7', 'leap15', 'ubuntu20.04'],
+packageBuildingPipelineDAOSTest(['distros': ['el8', 'el9', 'centos7', 'leap15', 'ubuntu20.04'],
                                  'make args': 'DISTRO_VERSION_EL8=8.5',
                                  'test-tag': 'daosio'])

@@ -1,6 +1,6 @@
 Name: mercury
 Version: 2.3.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # dl_version is version with ~ removed
 %{lua:
@@ -145,6 +145,9 @@ Mercury plugin to support the UCX transport.
 %{_libdir}/cmake/
 
 %changelog
+* Thu Jun 22 2023 Brian J. Murrell <brian.murrell@intel> - 2.3.0-2
+- Rebuild for EL9
+
 * Wed Jun  7 2023 Jerome Soumagne <jerome.soumagne@intel.com> - 2.3.0-1
 - Update to 2.3.0
 - Add hg_info tool

@@ -1,5 +1,5 @@
 Name: mercury
-Version: 2.3.0
+Version: 2.3.0.1
 Release: 2%{?dist}
 
 # dl_version is version with ~ removed
@@ -27,7 +27,7 @@ Summary:  RPC library for HPC systems
 License:  BSD
 Group:    Development/Libraries
 URL:      http://mercury-hpc.github.io/
-Source0:  https://github.com/mercury-hpc/%{name}/releases/download/v%{dl_version}/%{name}-%{dl_version}.tar.bz2
+Source0:  https://github.com/yuvale2/mercury/archive/refs/tags/v2.3.0.1.tar.gz
 
 BuildRequires:  libfabric-devel >= 1.14.0
 BuildRequires:  cmake
